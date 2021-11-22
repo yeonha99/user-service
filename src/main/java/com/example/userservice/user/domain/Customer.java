@@ -1,15 +1,11 @@
 package com.example.userservice.user.domain;
 
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -24,7 +20,6 @@ public class Customer {
     @Embedded
     UserInfo userInfo;
 
-
     public static Customer createCustomer (String id, String pw, UserInfo userInfo) {
         Customer customer=new Customer();
         customer.userInfo=userInfo;
@@ -33,8 +28,5 @@ public class Customer {
         return customer;
     }
 
-    public void updateCustomer(){
-
-    }
 
 }
