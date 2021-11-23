@@ -72,6 +72,16 @@ public class CustomerController {
             return customerService.updateMyInfo(customerInfoDto);
     }
 
+    @DeleteMapping("/info") // 고객 탈퇴
+    public ResponseDto<Object> deleteCustomer(HttpServletRequest request,@RequestBody StringDto stringDto){
+        String bearerToken = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return customerService.deleteCustomer(bearerToken.substring(7),stringDto);
+        }
+        return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
+    }
+
     @PutMapping("/info/pw") //내 비밀번호 변경
     public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@RequestBody PwUpdateDto pwUpdateDto){
         String bearerToken = request.getHeader("Authorization");
