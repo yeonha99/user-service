@@ -1,10 +1,7 @@
 package com.example.userservice.user.service;
 
 import com.example.userservice.Jwt.JwtServiceImpl;
-import com.example.userservice.common.BoolDto;
-import com.example.userservice.common.LoginDto;
-import com.example.userservice.common.ResponseDto;
-import com.example.userservice.common.UserDto;
+import com.example.userservice.common.*;
 import com.example.userservice.user.domain.Customer;
 import com.example.userservice.user.domain.UserInfo;
 import com.example.userservice.user.dto.CustomerCreateDto;
@@ -64,6 +61,24 @@ public class CustomerService {
                             .phone_num(customerInfoDto.getPhone_num())
                     .birthday(customerInfoDto.getBirthday())
                     .build());
+            customerRepository.save(customer);
+            responseDto.setCode(HttpStatus.SC_OK);
+        }
+        return responseDto;
+    }
+
+    //고객 비밀번호 변경 기능
+    public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
+        Map<String, Object> objectMap=jwtService.getInfo(jwt);
+        ResponseDto responseDto=ResponseDto.builder().build();
+        responseDto.setCode(HttpStatus.SC_OK);
+        Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
+        Customer customer=customerRepository.findCustomerById((String) user.get("id")).orElse(null);
+        //토큰 속 사람의 정보
+        if(customer!=null&&passwordEncoder.matches(pwUpdateDto.getPrev_pw(), customer.getPw())) {
+            //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
+            customer.updatePw(passwordEncoder.encode(pwUpdateDto.getNew_pw())); //변경 할때도 암호화 ^_^
+
             customerRepository.save(customer);
             responseDto.setCode(HttpStatus.SC_OK);
         }

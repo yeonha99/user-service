@@ -32,4 +32,8 @@ public class Customer {
         this.userInfo.updateInfo(userInfo);
     }
 
+    public void updatePw(String pw){
+        this.pw=pw;
+    }
+
 }

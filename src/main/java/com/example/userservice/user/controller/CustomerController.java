@@ -1,9 +1,6 @@
 package com.example.userservice.user.controller;
 
-import com.example.userservice.common.LoginDto;
-import com.example.userservice.common.ResponseDto;
-import com.example.userservice.common.TokenDto;
-import com.example.userservice.common.UserDto;
+import com.example.userservice.common.*;
 import com.example.userservice.user.dto.CustomerCreateDto;
 import com.example.userservice.user.dto.CustomerInfoDto;
 import com.example.userservice.user.service.CustomerService;
@@ -35,7 +32,6 @@ public class CustomerController {
              System.out.println(id);
             return customerService.duplicateIdCheck(id);
          }
-
 
          //로그인
          @PostMapping("/login")
@@ -73,8 +69,18 @@ public class CustomerController {
 
     @PutMapping("/info")//내 정보 수정
     public ResponseDto<Object> myInfoUpdate(@RequestBody CustomerInfoDto customerInfoDto){
-
             return customerService.updateMyInfo(customerInfoDto);
     }
+
+    @PutMapping("/info/pw") //내 비밀번호 변경
+    public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@RequestBody PwUpdateDto pwUpdateDto){
+        String bearerToken = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return customerService.updatePw(bearerToken.substring(7),pwUpdateDto);
+        }
+        return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
+    }
+
 
 }
