@@ -33,7 +33,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	runtimeOnly 'mysql:mysql-connector-java'
-
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security'
 	// Swagger 2
 	implementation 'io.springfox:springfox-swagger-ui:2.9.2'
 

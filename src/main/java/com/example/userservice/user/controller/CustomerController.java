@@ -32,7 +32,7 @@ public class CustomerController {
             String token= customerService.loginCustomer(loginDto);
              HttpHeaders httpHeaders = new HttpHeaders();
              httpHeaders.add("Authorization", "Bearer " + token);
-            int state=200;
+            int state=HttpStatus.SC_OK; //디폴트 성공 ^^
             if(token==null){
                 state= HttpStatus.SC_UNAUTHORIZED;
             }
