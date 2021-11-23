@@ -1,10 +1,11 @@
 package com.example.userservice.user.controller;
 
-import antlr.Token;
 import com.example.userservice.common.LoginDto;
 import com.example.userservice.common.ResponseDto;
 import com.example.userservice.common.TokenDto;
+import com.example.userservice.common.UserDto;
 import com.example.userservice.user.dto.CustomerCreateDto;
+import com.example.userservice.user.dto.CustomerInfoDto;
 import com.example.userservice.user.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
@@ -22,11 +23,21 @@ public class CustomerController {
 
         private final CustomerService customerService;
 
+        //회원가입
         @PostMapping("/sign-up")
         public ResponseDto<Object> createCustomer(@RequestBody CustomerCreateDto customerCreateDto){
             return customerService.createCustomer(customerCreateDto);
         }
 
+        //아이디 중복 확인
+         @GetMapping("/sign-up/{id}")
+         public ResponseDto<Object> duplicateIdCheck(@PathVariable String id){
+             System.out.println(id);
+            return customerService.duplicateIdCheck(id);
+         }
+
+
+         //로그인
          @PostMapping("/login")
          public ResponseEntity<TokenDto> loginCustomer(@RequestBody LoginDto loginDto){
             String token= customerService.loginCustomer(loginDto);
@@ -39,7 +50,7 @@ public class CustomerController {
              return new ResponseEntity<>(new TokenDto(token),httpHeaders,state);
          }
 
-         @GetMapping("/getAuthentication")
+         @GetMapping("/token") //토큰 해석
         public ResponseDto<Object> getAuthentication(HttpServletRequest request){
              String bearerToken = request.getHeader("Authorization");
 
@@ -48,5 +59,22 @@ public class CustomerController {
              }
             return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
          }
+
+         @GetMapping("/info")//내 정보 확인
+         public ResponseDto<Object> myInfo(HttpServletRequest request){
+            String bearerToken = request.getHeader("Authorization");
+
+            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+             return customerService.getMyInfo(bearerToken.substring(7));
+
+            }
+        return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
+         }
+
+    @PutMapping("/info")//내 정보 수정
+    public ResponseDto<Object> myInfoUpdate(@RequestBody CustomerInfoDto customerInfoDto){
+
+            return customerService.updateMyInfo(customerInfoDto);
+    }
 
 }

@@ -9,6 +9,10 @@ spring:
     url: jdbc:mysql://localhost:3306/user?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password: Dusgmlxhrl1!
+    #url: uplus3-rds.cm7qbaqeb5q4.ap-northeast-2.rds.amazonaws.com
+    #username: admin
+    #password: uplus3zzangzzang
+
   jpa:
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: false
@@ -17,6 +21,7 @@ spring:
     hibernate:
       format_sql: true
       ddl-auto: none
+
 eureka:
   client:
     register-with-eureka: true

@@ -28,5 +28,8 @@ public class Customer {
         return customer;
     }
 
+    public void updateCustomer(UserInfo userInfo){
+        this.userInfo.updateInfo(userInfo);
+    }
 
 }

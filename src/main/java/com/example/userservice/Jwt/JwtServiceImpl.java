@@ -1,12 +1,10 @@
 package com.example.userservice.Jwt;
 
 import com.example.userservice.common.UserDto;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 
@@ -28,8 +26,23 @@ public class JwtServiceImpl {
 
     // 토큰에 담긴 정보를 가져오기 메서드
     public Map<String, Object> getInfo(String token){
-        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(token); // secretKey를 사용하여 복호화
-        return claims.getBody();
+
+        Map<String,Object> claimMap=null;
+
+        try{
+            claimMap = Jwts.parser()
+                    .setSigningKey(secretKey.getBytes())
+                    .parseClaimsJws(token)
+                    .getBody();
+        }catch (ExpiredJwtException e){
+            System.out.println("만료된 토큰");
+            System.out.println(e);
+        }catch (Exception e){
+            System.out.println("그 외 오류");
+            System.out.println(e);
+        }
+        return claimMap;
+
     }
 
 }
