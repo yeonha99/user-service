@@ -25,4 +25,8 @@ public abstract class Manager {
     public void updateManager(UserInfo userInfo){
         this.userInfo.updateInfo(userInfo);
     }
+
+    public void updatePw(String pw){
+        this.pw=pw;
+    }
 }

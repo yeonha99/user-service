@@ -1,6 +1,7 @@
 package com.example.userservice.user.controller;
 
 import com.example.userservice.common.LoginDto;
+import com.example.userservice.common.PwUpdateDto;
 import com.example.userservice.common.ResponseDto;
 import com.example.userservice.common.TokenDto;
 import com.example.userservice.user.dto.CustomerInfoDto;
@@ -48,4 +49,15 @@ public class ManagerController {
     public ResponseDto<Object> myInfoUpdate(@RequestBody ManagerInfoDto managerInfoDto){
         return managerService.updateMyInfo(managerInfoDto);
     }
+
+    @PutMapping("/bo/info/pw")//내 비밀번호 수정
+    public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@RequestBody PwUpdateDto pwUpdateDto){
+        String bearerToken=request.getHeader("Authorization");
+        if(StringUtils.hasText(bearerToken)&&bearerToken.startsWith("Bearer ")){
+            return managerService.updatePw(bearerToken.substring(7),pwUpdateDto);
+        }
+        return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
+
+    }
+
 }
