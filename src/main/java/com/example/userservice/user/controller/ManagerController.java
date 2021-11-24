@@ -1,6 +1,7 @@
 package com.example.userservice.user.controller;
 
 import com.example.userservice.common.LoginDto;
+import com.example.userservice.common.ResponseDto;
 import com.example.userservice.common.TokenDto;
 import com.example.userservice.user.service.BranchManagerService;
 import com.example.userservice.user.service.ManagerService;
@@ -8,10 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/user-service")
@@ -29,5 +30,15 @@ public class ManagerController {
             state= HttpStatus.SC_UNAUTHORIZED;
         }
         return new ResponseEntity<>(new TokenDto(token),httpHeaders,state);
+    }
+    @GetMapping("/bo/info")//내 정보 확인
+    public ResponseDto<Object> myInfo(HttpServletRequest request){
+        String bearerToken = request.getHeader("Authorization");
+
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return managerService.getMyInfo(bearerToken.substring(7));
+
+        }
+        return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
     }
 }
