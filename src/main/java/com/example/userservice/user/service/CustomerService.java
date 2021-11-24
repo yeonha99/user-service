@@ -48,7 +48,7 @@ public class CustomerService {
         if(customer!=null&&passwordEncoder.matches(loginDto.getPw(), customer.getPw())) {
         //아이디 비번 일치 하면
             System.out.println("비밀번호 일치 함");
-            token=jwtService.createToken(UserDto.builder().id(customer.getId()).role("customer").build());
+            token=jwtService.createToken(UserDto.builder().id(customer.getId()).role("C").build());
 
         }
         return token;
