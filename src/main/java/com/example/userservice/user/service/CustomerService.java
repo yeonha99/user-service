@@ -26,7 +26,15 @@ public class CustomerService {
 
     public ResponseDto<Object> createCustomer(CustomerCreateDto customerCreateDto){
         String encodedPassword = passwordEncoder.encode(customerCreateDto.getPw());//회원가입 시ㅣ 비밀번호 암호화 추가
-        Customer customer=Customer.createCustomer(customerCreateDto.getId(),encodedPassword,customerCreateDto.getUserInfo());
+        System.out.println(customerCreateDto.toString());
+        Customer customer=Customer.createCustomer(customerCreateDto.getId(),encodedPassword,
+                UserInfo.builder()
+                        .phone_num(customerCreateDto.getPhone_num())
+                        .sex(customerCreateDto.getSex())
+                        .name(customerCreateDto.getName())
+                        .birthday(customerCreateDto.getBirthday())
+                        .build());
+
         customerRepository.save(customer);
         return ResponseDto.builder()
                 .code(HttpStatus.SC_OK)
