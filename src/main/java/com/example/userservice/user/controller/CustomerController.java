@@ -4,6 +4,7 @@ import com.example.userservice.common.*;
 import com.example.userservice.user.dto.CustomerCreateDto;
 import com.example.userservice.user.dto.CustomerInfoDto;
 import com.example.userservice.user.service.CustomerService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
