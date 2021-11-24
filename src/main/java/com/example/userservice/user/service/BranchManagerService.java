@@ -1,6 +1,7 @@
 package com.example.userservice.user.service;
 
 import com.example.userservice.Jwt.JwtServiceImpl;
+import com.example.userservice.common.BoolDto;
 import com.example.userservice.common.ResponseDto;
 import com.example.userservice.user.domain.BranchManager;
 import com.example.userservice.user.domain.Customer;
@@ -34,7 +35,17 @@ public class BranchManagerService {
                 .build();
 
     }
-
+    public ResponseDto<Object> duplicateIdCheck(String id){
+        Manager manager=managerRepository.findManagerById(id).orElse(null);
+        ResponseDto responseDto=ResponseDto.builder().build();
+        responseDto.setCode(HttpStatus.SC_OK);
+        if(manager==null){
+            responseDto.setContext(BoolDto.builder().check(true).build());
+        }else{
+            responseDto.setContext(BoolDto.builder().check(false).build());
+        }
+        return responseDto;
+    }
 
 
 }
