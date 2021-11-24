@@ -2,6 +2,7 @@ package com.example.userservice.user.service;
 
 import com.example.userservice.Jwt.JwtServiceImpl;
 import com.example.userservice.common.LoginDto;
+import com.example.userservice.common.PwUpdateDto;
 import com.example.userservice.common.ResponseDto;
 import com.example.userservice.common.UserDto;
 import com.example.userservice.user.client.StoreClient;
@@ -60,25 +61,33 @@ public class ManagerService {
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
+        String role= (String) user.get("role");
 
-        BranchManager branchManager =branchManagerRepository.findBranchManagerById((String) user.get("id")).orElse(null);
-        if (branchManager!=null){//지점 관리일 경우
+        if (role=="BN"){//지점 관리일 경우
 
-            Map<String,Object> map=client.findStoreName(branchManager.getStoreId()); //관리자의 매장 이름 매장 서비스에 물어봐서 가져오기
-            String store_name= ((String) map.get("store_name"));
+           // Map<String,Object> map=client.findStoreName(branchManager.getStoreId()); //관리자의 매장 이름 매장 서비스에 물어봐서 가져오기
+            //String store_name= ((String) map.get("store_name"));
+            BranchManager branchManager =branchManagerRepository.findBranchManagerById((String) user.get("id")).orElse(null);
 
-            responseDto.setContext(ManagerInfoDto.builder()
-                    .birthday(branchManager.getUserInfo().getBirthday())
-                    .sex(branchManager.getUserInfo().getSex())
-                    .name(branchManager.getUserInfo().getName())
-                    .phone_num(branchManager.getUserInfo().getPhone_num())
-                    .id(branchManager.getId())
-                    .store_name(store_name)
-                    .build()
-            );
-        }else{
+            if(branchManager!=null) {
+                responseDto.setContext(ManagerInfoDto.builder()
+                        .birthday(branchManager.getUserInfo().getBirthday())
+                        .sex(branchManager.getUserInfo().getSex())
+                        .name(branchManager.getUserInfo().getName())
+                        .phone_num(branchManager.getUserInfo().getPhone_num())
+                        .id(branchManager.getId())
+                        .store_name("store_name")
+                        .build()
+                );
+            }
+
+
+        }else if(role=="GM"){
+
+            //총관리자인 경우
             GeneralManager generalManager =generalManagerRepository.findGeneralManagerById((String) user.get("id")).orElse(null);
-            if(generalManager!=null){
+
+            if(generalManager!=null) {
                 responseDto.setContext(ManagerInfoDto.builder()
                         .birthday(generalManager.getUserInfo().getBirthday())
                         .sex(generalManager.getUserInfo().getSex())
@@ -86,12 +95,13 @@ public class ManagerService {
                         .phone_num(generalManager.getUserInfo().getPhone_num())
                         .id(generalManager.getId())
                         .store_name(null)
-                        .build()  );
+                        .build());
             }
-        }
+       }
         return responseDto;
     }
 
+    //내 정보 수정
     public ResponseDto<Object> updateMyInfo(ManagerInfoDto managerInfoDto) {
         Manager manager=managerRepository.findManagerById(managerInfoDto.getId()).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
@@ -109,5 +119,27 @@ public class ManagerService {
         }
         return responseDto;
     }
+
+
+    //관리자 비밀번호 변경 기능
+    public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
+        Map<String, Object> objectMap=jwtService.getInfo(jwt);
+        ResponseDto responseDto=ResponseDto.builder().build();
+        responseDto.setCode(HttpStatus.SC_OK);
+        Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
+        Manager manager=managerRepository.findManagerById((String) user.get("id")).orElse(null);
+        //토큰 속 사람의 정보
+
+        if(manager!=null&&passwordEncoder.matches(pwUpdateDto.getPrev_pw(), manager.getPw())) {
+            //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
+            manager.updatePw(passwordEncoder.encode(pwUpdateDto.getNew_pw())); //변경 할때도 암호화 ^_^
+
+            managerRepository.save(manager);
+            responseDto.setCode(HttpStatus.SC_OK);
+        }
+        return responseDto;
+    }
+
+
 
 }
