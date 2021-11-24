@@ -48,7 +48,7 @@ public class CustomerService {
         if(customer!=null&&passwordEncoder.matches(loginDto.getPw(), customer.getPw())) {
         //아이디 비번 일치 하면
             System.out.println("비밀번호 일치 함");
-            token=jwtService.createToken(UserDto.builder().id(customer.getId()).role("customer").build());
+            token=jwtService.createToken(UserDto.builder().id(customer.getId()).role("C").build());
 
         }
         return token;
@@ -129,21 +129,6 @@ public class CustomerService {
         return responseDto;
     }
 
-    //토큰 해석하고 토큰 안의 정보 반환해주는 기능
-    public ResponseDto<Object> getAuthentication(String jwt) {
-        Map<String, Object> objectMap=jwtService.getInfo(jwt);
-        ResponseDto responseDto=ResponseDto.builder().build();
-        Object object=objectMap.get("user");
-
-        if(object.equals(null)){
-            responseDto.setCode(HttpStatus.SC_UNAUTHORIZED);
-        }else{
-            responseDto.setCode(HttpStatus.SC_OK);
-            responseDto.setContext(object);
-        }
-        return responseDto;
-
-    }
 
     //아이디 중복 확인
     public ResponseDto<Object> duplicateIdCheck(String id){
