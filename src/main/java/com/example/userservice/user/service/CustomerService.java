@@ -129,21 +129,6 @@ public class CustomerService {
         return responseDto;
     }
 
-    //토큰 해석하고 토큰 안의 정보 반환해주는 기능
-    public ResponseDto<Object> getAuthentication(String jwt) {
-        Map<String, Object> objectMap=jwtService.getInfo(jwt);
-        ResponseDto responseDto=ResponseDto.builder().build();
-        Object object=objectMap.get("user");
-
-        if(object.equals(null)){
-            responseDto.setCode(HttpStatus.SC_UNAUTHORIZED);
-        }else{
-            responseDto.setCode(HttpStatus.SC_OK);
-            responseDto.setContext(object);
-        }
-        return responseDto;
-
-    }
 
     //아이디 중복 확인
     public ResponseDto<Object> duplicateIdCheck(String id){

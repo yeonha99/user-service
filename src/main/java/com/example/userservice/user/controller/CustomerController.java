@@ -4,7 +4,7 @@ import com.example.userservice.common.*;
 import com.example.userservice.user.dto.CustomerCreateDto;
 import com.example.userservice.user.dto.CustomerInfoDto;
 import com.example.userservice.user.service.CustomerService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.userservice.user.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +21,7 @@ import java.util.Map;
 public class CustomerController {
 
         private final CustomerService customerService;
+
 
         //회원가입
         @PostMapping("/sign-up")
@@ -59,14 +60,7 @@ public class CustomerController {
             return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
          }
           */
-         @PostMapping("/token") //다른 서비스에서 토큰 해석 요청
-         public ResponseDto<Object> getAuthentication(@RequestBody Map<String,Object> tokenDto){
-                String token= (String) tokenDto.get("token");
-             if (token!=null) {
-                 return customerService.getAuthentication(token);
-             }
-             return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
-         }
+
 
 
          @GetMapping("/info")//내 정보 확인
