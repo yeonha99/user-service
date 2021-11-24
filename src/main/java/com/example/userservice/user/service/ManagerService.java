@@ -61,26 +61,33 @@ public class ManagerService {
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
+        String role= (String) user.get("role");
 
-        BranchManager branchManager =branchManagerRepository.findBranchManagerById((String) user.get("id")).orElse(null);
-        if (branchManager!=null){//지점 관리일 경우
+        if (role=="BN"){//지점 관리일 경우
 
-            Map<String,Object> map=client.findStoreName(branchManager.getStoreId()); //관리자의 매장 이름 매장 서비스에 물어봐서 가져오기
-            String store_name= ((String) map.get("store_name"));
+           // Map<String,Object> map=client.findStoreName(branchManager.getStoreId()); //관리자의 매장 이름 매장 서비스에 물어봐서 가져오기
+            //String store_name= ((String) map.get("store_name"));
+            BranchManager branchManager =branchManagerRepository.findBranchManagerById((String) user.get("id")).orElse(null);
 
-            responseDto.setContext(ManagerInfoDto.builder()
-                    .birthday(branchManager.getUserInfo().getBirthday())
-                    .sex(branchManager.getUserInfo().getSex())
-                    .name(branchManager.getUserInfo().getName())
-                    .phone_num(branchManager.getUserInfo().getPhone_num())
-                    .id(branchManager.getId())
-                    .store_name(store_name)
-                    .build()
-            );
+            if(branchManager!=null) {
+                responseDto.setContext(ManagerInfoDto.builder()
+                        .birthday(branchManager.getUserInfo().getBirthday())
+                        .sex(branchManager.getUserInfo().getSex())
+                        .name(branchManager.getUserInfo().getName())
+                        .phone_num(branchManager.getUserInfo().getPhone_num())
+                        .id(branchManager.getId())
+                        .store_name("store_name")
+                        .build()
+                );
+            }
 
-        }else{
+
+        }else if(role=="GM"){
+
+            //총관리자인 경우
             GeneralManager generalManager =generalManagerRepository.findGeneralManagerById((String) user.get("id")).orElse(null);
-            if(generalManager!=null){
+
+            if(generalManager!=null) {
                 responseDto.setContext(ManagerInfoDto.builder()
                         .birthday(generalManager.getUserInfo().getBirthday())
                         .sex(generalManager.getUserInfo().getSex())
@@ -88,7 +95,7 @@ public class ManagerService {
                         .phone_num(generalManager.getUserInfo().getPhone_num())
                         .id(generalManager.getId())
                         .store_name(null)
-                        .build()  );
+                        .build());
             }
        }
         return responseDto;
