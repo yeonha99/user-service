@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user-service")
@@ -59,10 +60,10 @@ public class CustomerController {
          }
           */
          @PostMapping("/token") //다른 서비스에서 토큰 해석 요청
-         public ResponseDto<Object> getAuthentication(@RequestBody TokenDto tokenDto){
-
-             if (tokenDto.getToken()!=null) {
-                 return customerService.getAuthentication(tokenDto.getToken());
+         public ResponseDto<Object> getAuthentication(@RequestBody Map<String,Object> tokenDto){
+                String token= (String) tokenDto.get("token");
+             if (token!=null) {
+                 return customerService.getAuthentication(token);
              }
              return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
          }
