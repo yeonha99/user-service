@@ -29,17 +29,6 @@ public class BranchManagerController {
         return branchManagerService.duplicateIdCheck(id);
     }
 
-    //로그인
-    @PostMapping("/bo/login")
-    public ResponseEntity<TokenDto> loginCustomer(@RequestBody LoginDto loginDto){
-        String token= branchManagerService.loginManager(loginDto);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", "Bearer " + token);
-        int state= HttpStatus.SC_OK; //디폴트 성공 ^^
-        if(token==null){
-            state= HttpStatus.SC_UNAUTHORIZED;
-        }
-        return new ResponseEntity<>(new TokenDto(token),httpHeaders,state);
-    }
+
 
 }
