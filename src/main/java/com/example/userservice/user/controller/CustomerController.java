@@ -46,6 +46,7 @@ public class CustomerController {
              return new ResponseEntity<>(new TokenDto(token),httpHeaders,state);
          }
 
+         /*
          @GetMapping("/token") //토큰 해석
         public ResponseDto<Object> getAuthentication(HttpServletRequest request){
              String bearerToken = request.getHeader("Authorization");
@@ -55,6 +56,16 @@ public class CustomerController {
              }
             return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
          }
+          */
+         @PostMapping("/token") //다른 서비스에서 토큰 해석 요청
+         public ResponseDto<Object> getAuthentication(@RequestBody TokenDto tokenDto){
+
+             if (tokenDto.getToken()!=null) {
+                 return customerService.getAuthentication(tokenDto.getToken());
+             }
+             return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
+         }
+
 
          @GetMapping("/info")//내 정보 확인
          public ResponseDto<Object> myInfo(HttpServletRequest request){
