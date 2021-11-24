@@ -5,9 +5,7 @@ import com.example.userservice.common.LoginDto;
 import com.example.userservice.common.ResponseDto;
 import com.example.userservice.common.UserDto;
 import com.example.userservice.user.client.StoreClient;
-import com.example.userservice.user.domain.BranchManager;
-import com.example.userservice.user.domain.GeneralManager;
-import com.example.userservice.user.domain.Manager;
+import com.example.userservice.user.domain.*;
 import com.example.userservice.user.dto.ManagerInfoDto;
 import com.example.userservice.user.repository.BranchManagerRepository;
 import com.example.userservice.user.repository.GeneralManagerRepository;
@@ -89,11 +87,27 @@ public class ManagerService {
                         .id(generalManager.getId())
                         .store_name(null)
                         .build()  );
-
             }
-
         }
-
         return responseDto;
     }
+
+    public ResponseDto<Object> updateMyInfo(ManagerInfoDto managerInfoDto) {
+        Manager manager=managerRepository.findManagerById(managerInfoDto.getId()).orElse(null);
+        ResponseDto responseDto=ResponseDto.builder().build();
+        responseDto.setCode(HttpStatus.SC_UNAUTHORIZED);
+
+        if(manager!=null){
+            manager.updateManager(UserInfo.builder()
+                            .phone_num(managerInfoDto.getPhone_num())
+                            .sex(managerInfoDto.getSex())
+                            .name(managerInfoDto.getName())
+                            .birthday(managerInfoDto.getBirthday())
+                    .build());
+            managerRepository.save(manager);
+            responseDto.setCode(HttpStatus.SC_OK);
+        }
+        return responseDto;
+    }
+
 }

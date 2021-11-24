@@ -3,6 +3,8 @@ package com.example.userservice.user.controller;
 import com.example.userservice.common.LoginDto;
 import com.example.userservice.common.ResponseDto;
 import com.example.userservice.common.TokenDto;
+import com.example.userservice.user.dto.CustomerInfoDto;
+import com.example.userservice.user.dto.ManagerInfoDto;
 import com.example.userservice.user.service.BranchManagerService;
 import com.example.userservice.user.service.ManagerService;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +42,10 @@ public class ManagerController {
 
         }
         return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
+    }
+
+    @PutMapping("/bo/info")//내 정보 수정
+    public ResponseDto<Object> myInfoUpdate(@RequestBody ManagerInfoDto managerInfoDto){
+        return managerService.updateMyInfo(managerInfoDto);
     }
 }

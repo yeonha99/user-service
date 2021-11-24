@@ -22,4 +22,7 @@ public abstract class Manager {
     @Embedded
     protected UserInfo userInfo;
 
+    public void updateManager(UserInfo userInfo){
+        this.userInfo.updateInfo(userInfo);
+    }
 }
