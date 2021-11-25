@@ -60,12 +60,12 @@ public class GeneralManagerService {
     }
 
     @Transactional
-    public ResponseDto<Object> NotApprovalManager(String id){
+    public ResponseDto<Object> deleteManager(String id){
         BranchManager branchManager=branchManagerRepository.findById(id).orElse(null);
         System.out.println(branchManager);
 
         if(branchManager!=null){
-            branchManagerRepository.delete(branchManager);//가입 요청 삭제
+            branchManagerRepository.delete(branchManager);//관리자 삭제
         }
 
         return ResponseDto.builder().code(HttpStatus.SC_OK).build();
