@@ -12,10 +12,11 @@ import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Optional;
-
+@Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
@@ -24,6 +25,7 @@ public class CustomerService {
     private final JwtServiceImpl jwtService;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public ResponseDto<Object> createCustomer(CustomerCreateDto customerCreateDto){
         String encodedPassword = passwordEncoder.encode(customerCreateDto.getPw());//회원가입 시ㅣ 비밀번호 암호화 추가
         System.out.println(customerCreateDto.toString());
@@ -55,6 +57,7 @@ public class CustomerService {
     }
 
     //고객 정보 업데이트 하는 기능
+    @Transactional
     public ResponseDto<Object> updateMyInfo(CustomerInfoDto customerInfoDto){
 
         Customer customer=customerRepository.findCustomerById(customerInfoDto.getId()).orElse(null);
@@ -69,13 +72,13 @@ public class CustomerService {
                             .phone_num(customerInfoDto.getPhone_num())
                     .birthday(customerInfoDto.getBirthday())
                     .build());
-            customerRepository.save(customer);
             responseDto.setCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
 
     //고객 비밀번호 변경 기능
+    @Transactional
     public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
@@ -88,13 +91,13 @@ public class CustomerService {
             //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
             customer.updatePw(passwordEncoder.encode(pwUpdateDto.getNew_pw())); //변경 할때도 암호화 ^_^
 
-            customerRepository.save(customer);
             responseDto.setCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
 
     //고객 탈퇴 기능
+    @Transactional
     public ResponseDto<Object> deleteCustomer(String jwt, StringDto stringDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();

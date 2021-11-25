@@ -11,6 +11,7 @@ import com.example.userservice.user.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -19,13 +20,14 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class GeneralManagerService {
     private final ManagerRepository managerRepository;
     private final BranchManagerRepository branchManagerRepository;
 
 
 
-    public ResponseDto<Object> listApprovalRequests(){
+    public ResponseDto<Object> listApprovalRequests(){ //가입 승인 요청한 관리자들 목록
         List<BranchManager> branchManagers=branchManagerRepository.findAllByApproval(false);
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
@@ -44,5 +46,16 @@ public class GeneralManagerService {
             return ResponseDto.builder().context(preManager).code(HttpStatus.SC_OK).build();
         }
         else return ResponseDto.builder().code(HttpStatus.SC_BAD_REQUEST).build();
+    }
+
+    @Transactional
+    public ResponseDto<Object> ApprovalManager(String id){
+        BranchManager branchManager=branchManagerRepository.findById(id).orElse(null);
+        System.out.println(branchManager);
+        if(branchManager!=null){
+            branchManager.approvalManager(); //가입 승인으로 변경
+        }
+
+        return ResponseDto.builder().code(HttpStatus.SC_OK).build();
     }
 }

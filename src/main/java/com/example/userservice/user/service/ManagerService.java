@@ -15,11 +15,13 @@ import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ManagerService {
     private final ManagerRepository managerRepository;
     private final BranchManagerRepository branchManagerRepository;
@@ -102,6 +104,7 @@ public class ManagerService {
     }
 
     //내 정보 수정
+    @Transactional
     public ResponseDto<Object> updateMyInfo(ManagerInfoDto managerInfoDto) {
         Manager manager=managerRepository.findManagerById(managerInfoDto.getId()).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
@@ -114,7 +117,7 @@ public class ManagerService {
                             .name(managerInfoDto.getName())
                             .birthday(managerInfoDto.getBirthday())
                     .build());
-            managerRepository.save(manager);
+
             responseDto.setCode(HttpStatus.SC_OK);
         }
         return responseDto;
@@ -122,6 +125,7 @@ public class ManagerService {
 
 
     //관리자 비밀번호 변경 기능
+    @Transactional
     public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
@@ -135,7 +139,6 @@ public class ManagerService {
 
             manager.updatePw(passwordEncoder.encode(pwUpdateDto.getNew_pw())); //변경 할때도 암호화 ^_^
 
-            managerRepository.save(manager);
         }
         return responseDto;
     }

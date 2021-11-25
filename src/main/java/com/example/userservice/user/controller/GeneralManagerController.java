@@ -4,9 +4,7 @@ import com.example.userservice.common.ResponseDto;
 import com.example.userservice.user.service.CustomerService;
 import com.example.userservice.user.service.GeneralManagerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +19,9 @@ public class GeneralManagerController {
         return generalManagerService.listApprovalRequests();
     }
 
-
+    @PutMapping("/pre-manager")//가입 승인하기
+    public ResponseDto<Object> pre_manager_approval(@RequestParam("id") String id){
+        return generalManagerService.ApprovalManager(id);
+    }
 
 }
