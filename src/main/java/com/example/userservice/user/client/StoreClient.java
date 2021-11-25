@@ -15,6 +15,6 @@ import java.util.Map;
 public interface StoreClient {
 
     @GetMapping("/manager/store-name")//매장 id에 따른 이름 하나만 받아오기
-    Map<String,Object> findStoreName(@RequestParam int store_id);
+    Map<String,Object> findStoreName(@RequestParam int storeId);
 
 }

@@ -11,6 +11,6 @@ public class ManagerCreateDto {
     private String name;
     private LocalDate birthday;
     private Sex sex;
-    private String phone_num;
-    private int store_id;
+    private String phoneNum;
+    private int storeId;
 }

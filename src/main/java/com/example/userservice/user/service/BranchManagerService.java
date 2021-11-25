@@ -34,7 +34,7 @@ public class BranchManagerService {
                 .birthday(managerCreateDto.getBirthday())
                 .name(managerCreateDto.getName())
                 .sex(managerCreateDto.getSex())
-                .phone_num(managerCreateDto.getPhone_num()).build(), managerCreateDto.getStore_id());
+                .phone_num(managerCreateDto.getPhoneNum()).build(), managerCreateDto.getStoreId());
         managerRepository.save(branchManager);
         return ResponseDto.builder()
                 .code(HttpStatus.SC_OK)

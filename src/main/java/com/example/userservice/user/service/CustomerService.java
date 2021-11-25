@@ -31,7 +31,7 @@ public class CustomerService {
         System.out.println(customerCreateDto.toString());
         Customer customer=Customer.createCustomer(customerCreateDto.getId(),encodedPassword,
                 UserInfo.builder()
-                        .phone_num(customerCreateDto.getPhone_num())
+                        .phone_num(customerCreateDto.getPhoneNum())
                         .sex(customerCreateDto.getSex())
                         .name(customerCreateDto.getName())
                         .birthday(customerCreateDto.getBirthday())
@@ -69,7 +69,7 @@ public class CustomerService {
             customer.updateCustomer(UserInfo.builder()
                             .name(customerInfoDto.getName())
                             .sex(customerInfoDto.getSex())
-                            .phone_num(customerInfoDto.getPhone_num())
+                            .phone_num(customerInfoDto.getPhoneNum())
                     .birthday(customerInfoDto.getBirthday())
                     .build());
             responseDto.setCode(HttpStatus.SC_OK);
@@ -87,9 +87,9 @@ public class CustomerService {
         Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보
         System.out.println(customer.getPw());
-        if(customer!=null&&passwordEncoder.matches(pwUpdateDto.getPrev_pw(), customer.getPw())) {
+        if(customer!=null&&passwordEncoder.matches(pwUpdateDto.getPrevPw(), customer.getPw())) {
             //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
-            customer.updatePw(passwordEncoder.encode(pwUpdateDto.getNew_pw())); //변경 할때도 암호화 ^_^
+            customer.updatePw(passwordEncoder.encode(pwUpdateDto.getNewPw())); //변경 할때도 암호화 ^_^
 
             responseDto.setCode(HttpStatus.SC_OK);
         }
@@ -126,7 +126,7 @@ public class CustomerService {
                     .birthday(customer.getUserInfo().getBirthday())
                     .name(customer.getUserInfo().getName())
                     .sex(customer.getUserInfo().getSex())
-                    .phone_num(customer.getUserInfo().getPhone_num()).build();
+                    .phoneNum(customer.getUserInfo().getPhone_num()).build();
             responseDto.setContext(customerInfoDto);
         }
         return responseDto;
@@ -155,7 +155,7 @@ public class CustomerService {
                     .id(customer.getId())
                     .name(customer.getUserInfo().getName())
                     .sex(customer.getUserInfo().getSex())
-                    .phone_num(customer.getUserInfo().getPhone_num())
+                    .phoneNum(customer.getUserInfo().getPhone_num())
                     .build();
         }
         return null;

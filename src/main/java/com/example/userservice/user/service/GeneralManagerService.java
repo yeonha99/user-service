@@ -15,9 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -40,10 +39,10 @@ public class GeneralManagerService {
             preManager.add(ManagerInfoDto.builder()
                             .id(branchManager.getId())
                             .sex(branchManager.getUserInfo().getSex())
-                            .store_name(store_name)
+                            .storeName(store_name)
                             .name(branchManager.getUserInfo().getName())
                             .birthday(branchManager.getUserInfo().getBirthday())
-                            .phone_num(branchManager.getUserInfo().getPhone_num())
+                            .phoneNum(branchManager.getUserInfo().getPhone_num())
                     .build());
         }
 
@@ -86,10 +85,10 @@ public class GeneralManagerService {
             preManager.add(ManagerInfoDto.builder()
                     .id(branchManager.getId())
                     .sex(branchManager.getUserInfo().getSex())
-                    .store_name(store_name)
+                    .storeName(store_name)
                     .name(branchManager.getUserInfo().getName())
                     .birthday(branchManager.getUserInfo().getBirthday())
-                    .phone_num(branchManager.getUserInfo().getPhone_num())
+                    .phoneNum(branchManager.getUserInfo().getPhone_num())
                     .build());
         }
 

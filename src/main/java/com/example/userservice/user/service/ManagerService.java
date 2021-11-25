@@ -75,9 +75,9 @@ public class ManagerService {
                         .birthday(branchManager.getUserInfo().getBirthday())
                         .sex(branchManager.getUserInfo().getSex())
                         .name(branchManager.getUserInfo().getName())
-                        .phone_num(branchManager.getUserInfo().getPhone_num())
+                        .phoneNum(branchManager.getUserInfo().getPhone_num())
                         .id(branchManager.getId())
-                        .store_name(store_name)
+                        .storeName(store_name)
                         .build()
                 );
             }
@@ -92,9 +92,9 @@ public class ManagerService {
                         .birthday(generalManager.getUserInfo().getBirthday())
                         .sex(generalManager.getUserInfo().getSex())
                         .name(generalManager.getUserInfo().getName())
-                        .phone_num(generalManager.getUserInfo().getPhone_num())
+                        .phoneNum(generalManager.getUserInfo().getPhone_num())
                         .id(generalManager.getId())
-                        .store_name(null)
+                        .storeName(null)
                         .build());
             }
        }
@@ -110,7 +110,7 @@ public class ManagerService {
 
         if(manager!=null){
             manager.updateManager(UserInfo.builder()
-                            .phone_num(managerInfoDto.getPhone_num())
+                            .phone_num(managerInfoDto.getPhoneNum())
                             .sex(managerInfoDto.getSex())
                             .name(managerInfoDto.getName())
                             .birthday(managerInfoDto.getBirthday())
@@ -132,10 +132,10 @@ public class ManagerService {
         Manager manager=managerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보
 
-        if(manager!=null&&passwordEncoder.matches(pwUpdateDto.getPrev_pw(), manager.getPw())) {
+        if(manager!=null&&passwordEncoder.matches(pwUpdateDto.getPrevPw(), manager.getPw())) {
             //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
 
-            manager.updatePw(passwordEncoder.encode(pwUpdateDto.getNew_pw())); //변경 할때도 암호화 ^_^
+            manager.updatePw(passwordEncoder.encode(pwUpdateDto.getNewPw())); //변경 할때도 암호화 ^_^
 
         }
         return responseDto;
@@ -147,7 +147,7 @@ public class ManagerService {
         if(manager!=null){
 
             return ManagerInfoDto.builder()
-                    .phone_num(manager.getUserInfo().getPhone_num())
+                    .phoneNum(manager.getUserInfo().getPhone_num())
                     .birthday(manager.getUserInfo().getBirthday())
                     .id(manager.getId())
                     .name(manager.getUserInfo().getName())

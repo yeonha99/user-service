@@ -13,5 +13,5 @@ public class CustomerCreateDto {
     private String name;
     private LocalDate birthday;
     private Sex sex;
-    private String phone_num;
+    private String phoneNum;
 }

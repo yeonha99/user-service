@@ -6,6 +6,6 @@ import lombok.Getter;
 @Data
 @Getter
 public class StoreDto {
-    private int store_id;
+    private int storeId;
     private String name;
 }
