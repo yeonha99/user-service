@@ -29,6 +29,10 @@ public class GeneralManagerController {
         return generalManagerService.NotApprovalManager(id);
     }
 
+    @GetMapping("/manager") //가입 승인 처리된 관리자들 목록
+    public ResponseDto<Object> manager_list(){
+        return generalManagerService.ManagerList();
+    }
 
 
 }

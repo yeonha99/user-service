@@ -71,5 +71,25 @@ public class GeneralManagerService {
         return ResponseDto.builder().code(HttpStatus.SC_OK).build();
     }
 
+    public ResponseDto<Object> ManagerList(){ // 모든 관리자 목록 조회
+        List<BranchManager> branchManagers=branchManagerRepository.findAllByApproval(true);
+        List<ManagerInfoDto> preManager=new ArrayList<>();
+
+        for (BranchManager branchManager : branchManagers) {
+            preManager.add(ManagerInfoDto.builder()
+                    .id(branchManager.getId())
+                    .sex(branchManager.getUserInfo().getSex())
+                    .store_name("store_name")
+                    .name(branchManager.getUserInfo().getName())
+                    .birthday(branchManager.getUserInfo().getBirthday())
+                    .phone_num(branchManager.getUserInfo().getPhone_num())
+                    .build());
+        }
+
+        if(branchManagers!=null) {
+            return ResponseDto.builder().context(preManager).code(HttpStatus.SC_OK).build();
+        }
+        else return ResponseDto.builder().code(HttpStatus.SC_BAD_REQUEST).build();
+    }
 
 }
