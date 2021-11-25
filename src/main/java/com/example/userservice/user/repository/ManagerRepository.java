@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ManagerRepository extends JpaRepository<Manager,String> {
     Optional<Manager> findManagerById(String id);
+    Optional<Manager> findManagerByIdAndApproval(String id,boolean approval);
 }

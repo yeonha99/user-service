@@ -30,7 +30,7 @@ public class ManagerService {
 
     public String loginManager(LoginDto loginDto){//관리자 로그인
 
-        Manager manager=managerRepository.findManagerById(loginDto.getId()).orElse(null);
+        Manager manager=managerRepository.findManagerByIdAndApproval(loginDto.getId(),true).orElse(null);
 
         String token=null;
 
@@ -83,7 +83,6 @@ public class ManagerService {
 
 
         }else if(role.equals("GM")){
-
             //총관리자인 경우
             GeneralManager generalManager =generalManagerRepository.findGeneralManagerById((String) user.get("id")).orElse(null);
 
@@ -132,10 +131,10 @@ public class ManagerService {
 
         if(manager!=null&&passwordEncoder.matches(pwUpdateDto.getPrev_pw(), manager.getPw())) {
             //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
+
             manager.updatePw(passwordEncoder.encode(pwUpdateDto.getNew_pw())); //변경 할때도 암호화 ^_^
 
             managerRepository.save(manager);
-            responseDto.setCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
