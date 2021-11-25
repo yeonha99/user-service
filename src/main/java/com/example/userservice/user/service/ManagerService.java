@@ -25,7 +25,7 @@ public class ManagerService {
     private final GeneralManagerRepository generalManagerRepository;
     private final JwtServiceImpl jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final StoreClient client;
+    private final StoreClient storeClient;
 
     public String loginManager(LoginDto loginDto){//관리자 로그인
 
@@ -52,13 +52,7 @@ public class ManagerService {
         }
         return null;
     }
-    public UserNameIdDto getNameId(String id){
-        Manager manager=managerRepository.findById(id).orElse(null);
-        if(manager!=null){
-            return UserNameIdDto.builder().id(manager.getId()).name(manager.getUserInfo().getName()).build();
-        }
-        return null;
-    }
+
 
     //토큰 해석하고 관리자 정보 보내주는 기능
     public ResponseDto<Object> getMyInfo(String jwt){
@@ -71,18 +65,19 @@ public class ManagerService {
         System.out.println(role);
         if (role.equals("BM")){//지점 관리일 경우
             System.out.println("이프문 들어옴");
-           // Map<String,Object> map=client.findStoreName(branchManager.getStoreId()); //관리자의 매장 이름 매장 서비스에 물어봐서 가져오기
-            //String store_name= ((String) map.get("store_name"));
+
             BranchManager branchManager =branchManagerRepository.findById((String) user.get("id")).orElse(null);
             System.out.println(branchManager.getClass());
             if(branchManager!=null) {
+                String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+
                 responseDto.setContext(ManagerInfoDto.builder()
                         .birthday(branchManager.getUserInfo().getBirthday())
                         .sex(branchManager.getUserInfo().getSex())
                         .name(branchManager.getUserInfo().getName())
                         .phone_num(branchManager.getUserInfo().getPhone_num())
                         .id(branchManager.getId())
-                        .store_name("store_name")
+                        .store_name(store_name)
                         .build()
                 );
             }
@@ -150,13 +145,14 @@ public class ManagerService {
     public ManagerInfoDto getInfoById(String id) {
         Manager manager= managerRepository.getById(id);
         if(manager!=null){
+
             return ManagerInfoDto.builder()
                     .phone_num(manager.getUserInfo().getPhone_num())
                     .birthday(manager.getUserInfo().getBirthday())
                     .id(manager.getId())
                     .name(manager.getUserInfo().getName())
                     .sex(manager.getUserInfo().getSex())
-                    .store_name(null).build();
+                    .build();
         }
         return null;
     }

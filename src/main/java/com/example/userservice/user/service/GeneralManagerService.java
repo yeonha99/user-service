@@ -1,6 +1,7 @@
 package com.example.userservice.user.service;
 
 import com.example.userservice.common.ResponseDto;
+import com.example.userservice.user.client.StoreClient;
 import com.example.userservice.user.domain.BranchManager;
 import com.example.userservice.user.domain.Customer;
 import com.example.userservice.user.domain.Manager;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 public class GeneralManagerService {
     private final ManagerRepository managerRepository;
     private final BranchManagerRepository branchManagerRepository;
+    private final StoreClient storeClient;
 
 
 
@@ -32,10 +34,13 @@ public class GeneralManagerService {
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
         for (BranchManager branchManager : branchManagers) {
+
+            String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+
             preManager.add(ManagerInfoDto.builder()
                             .id(branchManager.getId())
                             .sex(branchManager.getUserInfo().getSex())
-                            .store_name("store_name")
+                            .store_name(store_name)
                             .name(branchManager.getUserInfo().getName())
                             .birthday(branchManager.getUserInfo().getBirthday())
                             .phone_num(branchManager.getUserInfo().getPhone_num())
@@ -76,10 +81,12 @@ public class GeneralManagerService {
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
         for (BranchManager branchManager : branchManagers) {
+            String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+
             preManager.add(ManagerInfoDto.builder()
                     .id(branchManager.getId())
                     .sex(branchManager.getUserInfo().getSex())
-                    .store_name("store_name")
+                    .store_name(store_name)
                     .name(branchManager.getUserInfo().getName())
                     .birthday(branchManager.getUserInfo().getBirthday())
                     .phone_num(branchManager.getUserInfo().getPhone_num())
