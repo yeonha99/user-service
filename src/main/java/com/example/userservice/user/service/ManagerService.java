@@ -30,27 +30,28 @@ public class ManagerService {
 
     public String loginManager(LoginDto loginDto){//관리자 로그인
 
-        Manager manager=managerRepository.findManagerByIdAndApproval(loginDto.getId(),true).orElse(null);
+        BranchManager branchManager=branchManagerRepository.findBranchManagerById(loginDto.getId()).orElse(null);
 
-        String token=null;
-
-        if(manager!=null){
-            String type=manager.getClass().getTypeName();
-            if(type.contains("BranchManager")&&passwordEncoder.matches(loginDto.getPw(), manager.getPw())) {
+        if(branchManager!=null) {
+            if (passwordEncoder.matches(loginDto.getPw(), branchManager.getPw())) {
                 //아이디 비번 일치 하면 일반 관리자 구분
                 System.out.println("지점 관리자 비밀번호 일치 함");
-                token = jwtService.createToken(UserDto.builder().id(manager.getId()).role("BM").build());
+                return jwtService.createToken(UserDto.builder().id(branchManager.getId()).role("BM").build());
 
             }
-            else if(type.contains("GeneralManager")&&passwordEncoder.matches(loginDto.getPw(), manager.getPw())){
+        }
+
+        GeneralManager generalManager=generalManagerRepository.findGeneralManagerById(loginDto.getId()).orElse(null);
+
+        if(generalManager!=null){
+            if(passwordEncoder.matches(loginDto.getPw(), generalManager.getPw())){
                 //총 관리자 구분
                 System.out.println("총 관리자 비밀번호 일치 함");
-                token = jwtService.createToken(UserDto.builder().id(manager.getId()).role("GM").build());
+                return jwtService.createToken(UserDto.builder().id(generalManager.getId()).role("GM").build());
 
             }
-
         }
-        return token;
+        return null;
     }
 
 
