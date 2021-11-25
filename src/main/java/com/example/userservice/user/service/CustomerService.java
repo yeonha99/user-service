@@ -12,10 +12,11 @@ import org.apache.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 import java.util.Optional;
-
+@Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
@@ -24,6 +25,7 @@ public class CustomerService {
     private final JwtServiceImpl jwtService;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public ResponseDto<Object> createCustomer(CustomerCreateDto customerCreateDto){
         String encodedPassword = passwordEncoder.encode(customerCreateDto.getPw());//회원가입 시ㅣ 비밀번호 암호화 추가
         System.out.println(customerCreateDto.toString());
@@ -43,7 +45,7 @@ public class CustomerService {
 
     public String loginCustomer(LoginDto loginDto){//고객 로그인
 
-        Customer customer=customerRepository.findCustomerById(loginDto.getId()).orElse(null);
+        Customer customer=customerRepository.findById(loginDto.getId()).orElse(null);
         String token=null;
         if(customer!=null&&passwordEncoder.matches(loginDto.getPw(), customer.getPw())) {
         //아이디 비번 일치 하면
@@ -55,9 +57,10 @@ public class CustomerService {
     }
 
     //고객 정보 업데이트 하는 기능
+    @Transactional
     public ResponseDto<Object> updateMyInfo(CustomerInfoDto customerInfoDto){
 
-        Customer customer=customerRepository.findCustomerById(customerInfoDto.getId()).orElse(null);
+        Customer customer=customerRepository.findById(customerInfoDto.getId()).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_UNAUTHORIZED);
 
@@ -69,38 +72,38 @@ public class CustomerService {
                             .phone_num(customerInfoDto.getPhone_num())
                     .birthday(customerInfoDto.getBirthday())
                     .build());
-            customerRepository.save(customer);
             responseDto.setCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
 
     //고객 비밀번호 변경 기능
+    @Transactional
     public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
-        Customer customer=customerRepository.findCustomerById((String) user.get("id")).orElse(null);
+        Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보
         System.out.println(customer.getPw());
         if(customer!=null&&passwordEncoder.matches(pwUpdateDto.getPrev_pw(), customer.getPw())) {
             //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
             customer.updatePw(passwordEncoder.encode(pwUpdateDto.getNew_pw())); //변경 할때도 암호화 ^_^
 
-            customerRepository.save(customer);
             responseDto.setCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
 
     //고객 탈퇴 기능
+    @Transactional
     public ResponseDto<Object> deleteCustomer(String jwt, StringDto stringDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
-        Customer customer=customerRepository.findCustomerById((String) user.get("id")).orElse(null);
+        Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
 
         if(customer!=null&&passwordEncoder.matches(stringDto.getString(), customer.getPw())) {
             //탈퇴 전 비밀번호 확인 ^ㅡ^
@@ -117,7 +120,7 @@ public class CustomerService {
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
 
-        Customer customer=customerRepository.findCustomerById((String) user.get("id")).orElse(null);
+        Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
         if(customer!=null){
             CustomerInfoDto customerInfoDto=CustomerInfoDto.builder().id(customer.getId())
                     .birthday(customer.getUserInfo().getBirthday())
@@ -132,7 +135,7 @@ public class CustomerService {
 
     //아이디 중복 확인
     public ResponseDto<Object> duplicateIdCheck(String id){
-        Customer customer=customerRepository.findCustomerById(id).orElse(null);
+        Customer customer=customerRepository.findById(id).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         if(customer==null){
@@ -144,4 +147,11 @@ public class CustomerService {
     }
 
 
+    public UserNameIdDto getNameId(String id) {
+        Customer customer=customerRepository.findById(id).orElse(null);
+        if(customer!=null){
+            return UserNameIdDto.builder().name(customer.getUserInfo().getName()).id(customer.getId()).build();
+        }
+        return null;
+    }
 }

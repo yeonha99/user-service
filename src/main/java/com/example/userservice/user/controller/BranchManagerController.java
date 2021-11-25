@@ -22,6 +22,7 @@ public class BranchManagerController {
     public ResponseDto<Object> createManager(@RequestBody ManagerCreateDto managerCreateDto){
         return branchManagerService.createManager(managerCreateDto);
     }
+
     //아이디 중복 확인
     @GetMapping("/bo/sign-up/{id}")
     public ResponseDto<Object> duplicateIdCheck(@PathVariable String id){

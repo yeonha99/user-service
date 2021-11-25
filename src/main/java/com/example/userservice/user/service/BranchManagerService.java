@@ -15,14 +15,18 @@ import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class BranchManagerService {
     private final ManagerRepository managerRepository;
     private final JwtServiceImpl jwtService;
     private final PasswordEncoder passwordEncoder;
 
+
+    @Transactional
     public ResponseDto<Object> createManager(ManagerCreateDto managerCreateDto){
         String encodedPassword = passwordEncoder.encode(managerCreateDto.getPw());//회원가입 시ㅣ 비밀번호 암호화 추가
 
@@ -37,8 +41,9 @@ public class BranchManagerService {
                 .build();
 
     }
+
     public ResponseDto<Object> duplicateIdCheck(String id){//관리자 아이디 중복 확인 검사
-        Manager manager=managerRepository.findManagerById(id).orElse(null);
+        Manager manager=managerRepository.findById(id).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         if(manager==null){

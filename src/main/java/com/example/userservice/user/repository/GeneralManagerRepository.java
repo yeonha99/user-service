@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
 public interface GeneralManagerRepository extends JpaRepository<GeneralManager,String> {
-    Optional<GeneralManager> findGeneralManagerById(String id);
+
 }
