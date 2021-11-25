@@ -147,4 +147,11 @@ public class CustomerService {
     }
 
 
+    public UserNameIdDto getNameId(String id) {
+        Customer customer=customerRepository.findById(id).orElse(null);
+        if(customer!=null){
+            return UserNameIdDto.builder().name(customer.getUserInfo().getName()).id(customer.getId()).build();
+        }
+        return null;
+    }
 }

@@ -1,10 +1,7 @@
 package com.example.userservice.user.service;
 
 import com.example.userservice.Jwt.JwtServiceImpl;
-import com.example.userservice.common.LoginDto;
-import com.example.userservice.common.PwUpdateDto;
-import com.example.userservice.common.ResponseDto;
-import com.example.userservice.common.UserDto;
+import com.example.userservice.common.*;
 import com.example.userservice.user.client.StoreClient;
 import com.example.userservice.user.domain.*;
 import com.example.userservice.user.dto.ManagerInfoDto;
@@ -55,7 +52,13 @@ public class ManagerService {
         }
         return null;
     }
-
+    public UserNameIdDto getNameId(String id){
+        Manager manager=managerRepository.findById(id).orElse(null);
+        if(manager!=null){
+            return UserNameIdDto.builder().id(manager.getId()).name(manager.getUserInfo().getName()).build();
+        }
+        return null;
+    }
 
     //토큰 해석하고 관리자 정보 보내주는 기능
     public ResponseDto<Object> getMyInfo(String jwt){
