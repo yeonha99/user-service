@@ -1,6 +1,8 @@
 package com.example.userservice.user.controller;
 
 import com.example.userservice.common.UserNameIdDto;
+import com.example.userservice.user.dto.CustomerInfoDto;
+import com.example.userservice.user.dto.ManagerInfoDto;
 import com.example.userservice.user.service.CustomerService;
 import com.example.userservice.user.service.ManagerService;
 import lombok.RequiredArgsConstructor;
@@ -16,16 +18,19 @@ public class UserController {
     private final ManagerService managerService;
     private final CustomerService customerService;
 
-    @GetMapping("/user-info")//아이디에 따라 이름 가져오기ㅣ
-    public UserNameIdDto userInfo(@RequestParam("id") String id){
-        UserNameIdDto userNameIdDto=managerService.getNameId(id);
-        if(userNameIdDto!=null){
-            return userNameIdDto;
-        }
-        else{
-            userNameIdDto=customerService.getNameId(id);
-            if(userNameIdDto!=null)
-                return userNameIdDto;
+    @GetMapping("/customer-info")//고객 아이디에 따라 정보 가져오기ㅣ
+    public CustomerInfoDto customerInfo(@RequestParam("id") String id){
+            CustomerInfoDto customerInfoDto =customerService.getInfoById(id);
+            if(customerInfoDto!=null)
+                return customerInfoDto;
+
+        return null;
+    }
+    @GetMapping("/manager-info")//관리자 아이디에 따라 정보 가져오기ㅣ
+    public ManagerInfoDto managerInfo(@RequestParam("id") String id){
+        ManagerInfoDto managerInfoDto=managerService.getInfoById(id);
+        if(managerInfoDto!=null){
+            return managerInfoDto;
         }
         return null;
     }

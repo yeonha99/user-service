@@ -147,5 +147,17 @@ public class ManagerService {
     }
 
 
-
+    public ManagerInfoDto getInfoById(String id) {
+        Manager manager= managerRepository.getById(id);
+        if(manager!=null){
+            return ManagerInfoDto.builder()
+                    .phone_num(manager.getUserInfo().getPhone_num())
+                    .birthday(manager.getUserInfo().getBirthday())
+                    .id(manager.getId())
+                    .name(manager.getUserInfo().getName())
+                    .sex(manager.getUserInfo().getSex())
+                    .store_name(null).build();
+        }
+        return null;
+    }
 }
