@@ -32,7 +32,7 @@ public class ManagerService {
 
     public String loginManager(LoginDto loginDto){//관리자 로그인
 
-        BranchManager branchManager=branchManagerRepository.findBranchManagerById(loginDto.getId()).orElse(null);
+        BranchManager branchManager=branchManagerRepository.findById(loginDto.getId()).orElse(null);
 
         if(branchManager!=null) {
             if (passwordEncoder.matches(loginDto.getPw(), branchManager.getPw())) {
@@ -43,7 +43,7 @@ public class ManagerService {
             }
         }
 
-        GeneralManager generalManager=generalManagerRepository.findGeneralManagerById(loginDto.getId()).orElse(null);
+        GeneralManager generalManager=generalManagerRepository.findById(loginDto.getId()).orElse(null);
 
         if(generalManager!=null){
             if(passwordEncoder.matches(loginDto.getPw(), generalManager.getPw())){
@@ -70,7 +70,7 @@ public class ManagerService {
             System.out.println("이프문 들어옴");
            // Map<String,Object> map=client.findStoreName(branchManager.getStoreId()); //관리자의 매장 이름 매장 서비스에 물어봐서 가져오기
             //String store_name= ((String) map.get("store_name"));
-            BranchManager branchManager =branchManagerRepository.findBranchManagerById((String) user.get("id")).orElse(null);
+            BranchManager branchManager =branchManagerRepository.findById((String) user.get("id")).orElse(null);
             System.out.println(branchManager.getClass());
             if(branchManager!=null) {
                 responseDto.setContext(ManagerInfoDto.builder()
@@ -87,7 +87,7 @@ public class ManagerService {
 
         }else if(role.equals("GM")){
             //총관리자인 경우
-            GeneralManager generalManager =generalManagerRepository.findGeneralManagerById((String) user.get("id")).orElse(null);
+            GeneralManager generalManager =generalManagerRepository.findById((String) user.get("id")).orElse(null);
 
             if(generalManager!=null) {
                 responseDto.setContext(ManagerInfoDto.builder()
@@ -106,7 +106,7 @@ public class ManagerService {
     //내 정보 수정
     @Transactional
     public ResponseDto<Object> updateMyInfo(ManagerInfoDto managerInfoDto) {
-        Manager manager=managerRepository.findManagerById(managerInfoDto.getId()).orElse(null);
+        Manager manager=managerRepository.findById(managerInfoDto.getId()).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_UNAUTHORIZED);
 
@@ -131,7 +131,7 @@ public class ManagerService {
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
-        Manager manager=managerRepository.findManagerById((String) user.get("id")).orElse(null);
+        Manager manager=managerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보
 
         if(manager!=null&&passwordEncoder.matches(pwUpdateDto.getPrev_pw(), manager.getPw())) {

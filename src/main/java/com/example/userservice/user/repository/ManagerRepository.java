@@ -11,5 +11,4 @@ import java.util.List;
 import java.util.Optional;
 @Repository
 public interface ManagerRepository extends JpaRepository<Manager,String> {
-    Optional<Manager> findManagerById(String id);
 }

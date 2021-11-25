@@ -43,7 +43,7 @@ public class BranchManagerService {
     }
 
     public ResponseDto<Object> duplicateIdCheck(String id){//관리자 아이디 중복 확인 검사
-        Manager manager=managerRepository.findManagerById(id).orElse(null);
+        Manager manager=managerRepository.findById(id).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         if(manager==null){

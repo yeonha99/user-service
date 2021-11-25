@@ -45,7 +45,7 @@ public class CustomerService {
 
     public String loginCustomer(LoginDto loginDto){//고객 로그인
 
-        Customer customer=customerRepository.findCustomerById(loginDto.getId()).orElse(null);
+        Customer customer=customerRepository.findById(loginDto.getId()).orElse(null);
         String token=null;
         if(customer!=null&&passwordEncoder.matches(loginDto.getPw(), customer.getPw())) {
         //아이디 비번 일치 하면
@@ -60,7 +60,7 @@ public class CustomerService {
     @Transactional
     public ResponseDto<Object> updateMyInfo(CustomerInfoDto customerInfoDto){
 
-        Customer customer=customerRepository.findCustomerById(customerInfoDto.getId()).orElse(null);
+        Customer customer=customerRepository.findById(customerInfoDto.getId()).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_UNAUTHORIZED);
 
@@ -84,7 +84,7 @@ public class CustomerService {
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
-        Customer customer=customerRepository.findCustomerById((String) user.get("id")).orElse(null);
+        Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보
         System.out.println(customer.getPw());
         if(customer!=null&&passwordEncoder.matches(pwUpdateDto.getPrev_pw(), customer.getPw())) {
@@ -103,7 +103,7 @@ public class CustomerService {
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
-        Customer customer=customerRepository.findCustomerById((String) user.get("id")).orElse(null);
+        Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
 
         if(customer!=null&&passwordEncoder.matches(stringDto.getString(), customer.getPw())) {
             //탈퇴 전 비밀번호 확인 ^ㅡ^
@@ -120,7 +120,7 @@ public class CustomerService {
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
 
-        Customer customer=customerRepository.findCustomerById((String) user.get("id")).orElse(null);
+        Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
         if(customer!=null){
             CustomerInfoDto customerInfoDto=CustomerInfoDto.builder().id(customer.getId())
                     .birthday(customer.getUserInfo().getBirthday())
@@ -135,7 +135,7 @@ public class CustomerService {
 
     //아이디 중복 확인
     public ResponseDto<Object> duplicateIdCheck(String id){
-        Customer customer=customerRepository.findCustomerById(id).orElse(null);
+        Customer customer=customerRepository.findById(id).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
         responseDto.setCode(HttpStatus.SC_OK);
         if(customer==null){

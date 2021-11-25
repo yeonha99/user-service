@@ -58,4 +58,18 @@ public class GeneralManagerService {
 
         return ResponseDto.builder().code(HttpStatus.SC_OK).build();
     }
+
+    @Transactional
+    public ResponseDto<Object> NotApprovalManager(String id){
+        BranchManager branchManager=branchManagerRepository.findById(id).orElse(null);
+        System.out.println(branchManager);
+
+        if(branchManager!=null){
+            branchManagerRepository.delete(branchManager);//가입 요청 삭제
+        }
+
+        return ResponseDto.builder().code(HttpStatus.SC_OK).build();
+    }
+
+
 }
