@@ -24,4 +24,11 @@ public class GeneralManagerController {
         return generalManagerService.ApprovalManager(id);
     }
 
+    @DeleteMapping("/pre-manager")//가입 승인 불통
+    public ResponseDto<Object> pre_manager_delete(@RequestParam("id") String id){
+        return generalManagerService.NotApprovalManager(id);
+    }
+
+
+
 }
