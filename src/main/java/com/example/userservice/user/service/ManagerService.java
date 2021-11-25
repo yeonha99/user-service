@@ -62,13 +62,13 @@ public class ManagerService {
         responseDto.setCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         String role= (String) user.get("role");
-
-        if (role=="BN"){//지점 관리일 경우
-
+        System.out.println(role);
+        if (role.equals("BM")){//지점 관리일 경우
+            System.out.println("이프문 들어옴");
            // Map<String,Object> map=client.findStoreName(branchManager.getStoreId()); //관리자의 매장 이름 매장 서비스에 물어봐서 가져오기
             //String store_name= ((String) map.get("store_name"));
             BranchManager branchManager =branchManagerRepository.findBranchManagerById((String) user.get("id")).orElse(null);
-
+            System.out.println(branchManager.getClass());
             if(branchManager!=null) {
                 responseDto.setContext(ManagerInfoDto.builder()
                         .birthday(branchManager.getUserInfo().getBirthday())
@@ -82,7 +82,7 @@ public class ManagerService {
             }
 
 
-        }else if(role=="GM"){
+        }else if(role.equals("GM")){
 
             //총관리자인 경우
             GeneralManager generalManager =generalManagerRepository.findGeneralManagerById((String) user.get("id")).orElse(null);
