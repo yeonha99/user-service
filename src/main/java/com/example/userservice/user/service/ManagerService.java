@@ -25,7 +25,7 @@ public class ManagerService {
     private final GeneralManagerRepository generalManagerRepository;
     private final JwtServiceImpl jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final StoreClient client;
+    private final StoreClient storeClient;
 
     public String loginManager(LoginDto loginDto){//관리자 로그인
 
@@ -52,13 +52,7 @@ public class ManagerService {
         }
         return null;
     }
-    public UserNameIdDto getNameId(String id){
-        Manager manager=managerRepository.findById(id).orElse(null);
-        if(manager!=null){
-            return UserNameIdDto.builder().id(manager.getId()).name(manager.getUserInfo().getName()).build();
-        }
-        return null;
-    }
+
 
     //토큰 해석하고 관리자 정보 보내주는 기능
     public ResponseDto<Object> getMyInfo(String jwt){
@@ -71,18 +65,19 @@ public class ManagerService {
         System.out.println(role);
         if (role.equals("BM")){//지점 관리일 경우
             System.out.println("이프문 들어옴");
-           // Map<String,Object> map=client.findStoreName(branchManager.getStoreId()); //관리자의 매장 이름 매장 서비스에 물어봐서 가져오기
-            //String store_name= ((String) map.get("store_name"));
+
             BranchManager branchManager =branchManagerRepository.findById((String) user.get("id")).orElse(null);
             System.out.println(branchManager.getClass());
             if(branchManager!=null) {
+                String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+
                 responseDto.setContext(ManagerInfoDto.builder()
                         .birthday(branchManager.getUserInfo().getBirthday())
                         .sex(branchManager.getUserInfo().getSex())
                         .name(branchManager.getUserInfo().getName())
-                        .phone_num(branchManager.getUserInfo().getPhone_num())
+                        .phoneNum(branchManager.getUserInfo().getPhone_num())
                         .id(branchManager.getId())
-                        .store_name("store_name")
+                        .storeName(store_name)
                         .build()
                 );
             }
@@ -97,9 +92,9 @@ public class ManagerService {
                         .birthday(generalManager.getUserInfo().getBirthday())
                         .sex(generalManager.getUserInfo().getSex())
                         .name(generalManager.getUserInfo().getName())
-                        .phone_num(generalManager.getUserInfo().getPhone_num())
+                        .phoneNum(generalManager.getUserInfo().getPhone_num())
                         .id(generalManager.getId())
-                        .store_name(null)
+                        .storeName(null)
                         .build());
             }
        }
@@ -115,7 +110,7 @@ public class ManagerService {
 
         if(manager!=null){
             manager.updateManager(UserInfo.builder()
-                            .phone_num(managerInfoDto.getPhone_num())
+                            .phone_num(managerInfoDto.getPhoneNum())
                             .sex(managerInfoDto.getSex())
                             .name(managerInfoDto.getName())
                             .birthday(managerInfoDto.getBirthday())
@@ -137,10 +132,10 @@ public class ManagerService {
         Manager manager=managerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보
 
-        if(manager!=null&&passwordEncoder.matches(pwUpdateDto.getPrev_pw(), manager.getPw())) {
+        if(manager!=null&&passwordEncoder.matches(pwUpdateDto.getPrevPw(), manager.getPw())) {
             //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
 
-            manager.updatePw(passwordEncoder.encode(pwUpdateDto.getNew_pw())); //변경 할때도 암호화 ^_^
+            manager.updatePw(passwordEncoder.encode(pwUpdateDto.getNewPw())); //변경 할때도 암호화 ^_^
 
         }
         return responseDto;
@@ -150,13 +145,14 @@ public class ManagerService {
     public ManagerInfoDto getInfoById(String id) {
         Manager manager= managerRepository.getById(id);
         if(manager!=null){
+
             return ManagerInfoDto.builder()
-                    .phone_num(manager.getUserInfo().getPhone_num())
+                    .phoneNum(manager.getUserInfo().getPhone_num())
                     .birthday(manager.getUserInfo().getBirthday())
                     .id(manager.getId())
                     .name(manager.getUserInfo().getName())
                     .sex(manager.getUserInfo().getSex())
-                    .store_name(null).build();
+                    .build();
         }
         return null;
     }

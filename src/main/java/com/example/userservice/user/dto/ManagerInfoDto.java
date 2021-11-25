@@ -13,8 +13,8 @@ public class ManagerInfoDto {
     public String name;
     public LocalDate birthday;
     public Sex sex;
-    public String phone_num;
-    public String store_name;
+    public String phoneNum;
+    public String storeName;
 
 
 }

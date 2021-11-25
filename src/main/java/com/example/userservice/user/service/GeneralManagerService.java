@@ -1,6 +1,7 @@
 package com.example.userservice.user.service;
 
 import com.example.userservice.common.ResponseDto;
+import com.example.userservice.user.client.StoreClient;
 import com.example.userservice.user.domain.BranchManager;
 import com.example.userservice.user.domain.Customer;
 import com.example.userservice.user.domain.Manager;
@@ -14,9 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
 public class GeneralManagerService {
     private final ManagerRepository managerRepository;
     private final BranchManagerRepository branchManagerRepository;
+    private final StoreClient storeClient;
 
 
 
@@ -32,13 +33,16 @@ public class GeneralManagerService {
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
         for (BranchManager branchManager : branchManagers) {
+
+            String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+
             preManager.add(ManagerInfoDto.builder()
                             .id(branchManager.getId())
                             .sex(branchManager.getUserInfo().getSex())
-                            .store_name("store_name")
+                            .storeName(store_name)
                             .name(branchManager.getUserInfo().getName())
                             .birthday(branchManager.getUserInfo().getBirthday())
-                            .phone_num(branchManager.getUserInfo().getPhone_num())
+                            .phoneNum(branchManager.getUserInfo().getPhone_num())
                     .build());
         }
 
@@ -76,13 +80,15 @@ public class GeneralManagerService {
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
         for (BranchManager branchManager : branchManagers) {
+            String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+
             preManager.add(ManagerInfoDto.builder()
                     .id(branchManager.getId())
                     .sex(branchManager.getUserInfo().getSex())
-                    .store_name("store_name")
+                    .storeName(store_name)
                     .name(branchManager.getUserInfo().getName())
                     .birthday(branchManager.getUserInfo().getBirthday())
-                    .phone_num(branchManager.getUserInfo().getPhone_num())
+                    .phoneNum(branchManager.getUserInfo().getPhone_num())
                     .build());
         }
 
