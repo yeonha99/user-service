@@ -9,13 +9,11 @@ import com.example.userservice.user.dto.CustomerInfoDto;
 import com.example.userservice.user.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
-import java.util.Optional;
 @Transactional(readOnly = true)
 @Service
 @RequiredArgsConstructor

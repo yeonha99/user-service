@@ -27,15 +27,22 @@ public class ManagerService {
     private final PasswordEncoder passwordEncoder;
     private final StoreClient storeClient;
 
-    public String loginManager(LoginDto loginDto){//관리자 로그인
+    public ManagerTokenDto loginManager(LoginDto loginDto){//관리자 로그인
 
         BranchManager branchManager=branchManagerRepository.findById(loginDto.getId()).orElse(null);
+
 
         if(branchManager!=null) {
             if (passwordEncoder.matches(loginDto.getPw(), branchManager.getPw())) {
                 //아이디 비번 일치 하면 일반 관리자 구분
                 System.out.println("지점 관리자 비밀번호 일치 함");
-                return jwtService.createToken(UserDto.builder().id(branchManager.getId()).role("BM").build());
+                String storeName=(String) storeClient.findStoreName(branchManager.getStoreId()).get("storeName");
+                return ManagerTokenDto.builder()
+                        .storeId(branchManager.getStoreId())
+                        .token(jwtService.createToken(UserDto.builder().id(branchManager.getId()).role("BM").build()))
+                        .role("BM")
+                        .storeName(storeName)
+                        .build();
 
             }
         }
@@ -46,7 +53,13 @@ public class ManagerService {
             if(passwordEncoder.matches(loginDto.getPw(), generalManager.getPw())){
                 //총 관리자 구분
                 System.out.println("총 관리자 비밀번호 일치 함");
-                return jwtService.createToken(UserDto.builder().id(generalManager.getId()).role("GM").build());
+
+                return ManagerTokenDto.builder()
+                        .token(jwtService.createToken(UserDto.builder().id(generalManager.getId()).role("GM").build()))
+                        .role("GM")
+                        .storeId(0)
+                        .storeName("총 관리자")
+                        .build();
 
             }
         }
@@ -69,7 +82,6 @@ public class ManagerService {
             BranchManager branchManager =branchManagerRepository.findById((String) user.get("id")).orElse(null);
             System.out.println(branchManager.getClass());
             if(branchManager!=null) {
-                String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
 
                 responseDto.setContext(ManagerInfoDto.builder()
                         .birthday(branchManager.getUserInfo().getBirthday())
@@ -77,7 +89,6 @@ public class ManagerService {
                         .name(branchManager.getUserInfo().getName())
                         .phoneNum(branchManager.getUserInfo().getPhone_num())
                         .id(branchManager.getId())
-                        .storeName(store_name)
                         .build()
                 );
             }
@@ -94,7 +105,6 @@ public class ManagerService {
                         .name(generalManager.getUserInfo().getName())
                         .phoneNum(generalManager.getUserInfo().getPhone_num())
                         .id(generalManager.getId())
-                        .storeName(null)
                         .build());
             }
        }
