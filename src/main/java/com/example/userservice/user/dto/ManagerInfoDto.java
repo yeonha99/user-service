@@ -9,12 +9,10 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class ManagerInfoDto {
-    public String id;
-    public String name;
-    public LocalDate birthday;
-    public Sex sex;
-    public String phoneNum;
-    public String storeName;
-
-
+    private String id;
+    private String name;
+    private LocalDate birthday;
+    private Sex sex;
+    private String phoneNum;
+    private String storeName;
 }

@@ -82,7 +82,6 @@ public class ManagerService {
             BranchManager branchManager =branchManagerRepository.findById((String) user.get("id")).orElse(null);
             System.out.println(branchManager.getClass());
             if(branchManager!=null) {
-                String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
 
                 responseDto.setContext(ManagerInfoDto.builder()
                         .birthday(branchManager.getUserInfo().getBirthday())
@@ -90,7 +89,6 @@ public class ManagerService {
                         .name(branchManager.getUserInfo().getName())
                         .phoneNum(branchManager.getUserInfo().getPhone_num())
                         .id(branchManager.getId())
-                        .storeName(store_name)
                         .build()
                 );
             }
@@ -107,7 +105,6 @@ public class ManagerService {
                         .name(generalManager.getUserInfo().getName())
                         .phoneNum(generalManager.getUserInfo().getPhone_num())
                         .id(generalManager.getId())
-                        .storeName(null)
                         .build());
             }
        }
