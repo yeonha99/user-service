@@ -1,12 +1,8 @@
 package com.example.userservice.user.controller;
 
-import com.example.userservice.common.LoginDto;
-import com.example.userservice.common.PwUpdateDto;
-import com.example.userservice.common.ResponseDto;
-import com.example.userservice.common.TokenDto;
-import com.example.userservice.user.dto.CustomerInfoDto;
+import com.example.userservice.common.*;
+import com.example.userservice.user.domain.Manager;
 import com.example.userservice.user.dto.ManagerInfoDto;
-import com.example.userservice.user.service.BranchManagerService;
 import com.example.userservice.user.service.ManagerService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
@@ -24,15 +20,15 @@ public class ManagerController {
     private final ManagerService managerService;
     //로그인
     @PostMapping("/bo/login")
-    public ResponseEntity<TokenDto> loginCustomer(@RequestBody LoginDto loginDto){
-        String token= managerService.loginManager(loginDto);
+    public ResponseEntity<ManagerTokenDto> loginCustomer(@RequestBody LoginDto loginDto){
+        ManagerTokenDto managerTokenDto= managerService.loginManager(loginDto);
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", "Bearer " + token);
+        httpHeaders.add("Authorization", "Bearer " + managerTokenDto.getToken());
         int state= HttpStatus.SC_OK; //디폴트 성공 ^^
-        if(token==null){
+        if(managerTokenDto.getToken()==null){
             state= HttpStatus.SC_UNAUTHORIZED;
         }
-        return new ResponseEntity<>(new TokenDto(token),httpHeaders,state);
+        return new ResponseEntity<>(managerTokenDto,httpHeaders,state);
     }
     @GetMapping("/bo/info")//내 정보 확인
     public ResponseDto<Object> myInfo(HttpServletRequest request){

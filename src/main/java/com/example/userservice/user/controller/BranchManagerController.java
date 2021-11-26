@@ -1,14 +1,9 @@
 package com.example.userservice.user.controller;
 
-import com.example.userservice.common.LoginDto;
 import com.example.userservice.common.ResponseDto;
-import com.example.userservice.common.TokenDto;
 import com.example.userservice.user.dto.ManagerCreateDto;
 import com.example.userservice.user.service.BranchManagerService;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpStatus;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

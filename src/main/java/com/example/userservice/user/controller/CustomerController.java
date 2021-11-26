@@ -4,7 +4,6 @@ import com.example.userservice.common.*;
 import com.example.userservice.user.dto.CustomerCreateDto;
 import com.example.userservice.user.dto.CustomerInfoDto;
 import com.example.userservice.user.service.CustomerService;
-import com.example.userservice.user.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
@@ -13,7 +12,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user-service")
@@ -38,7 +36,7 @@ public class CustomerController {
 
          //로그인
          @PostMapping("/login")
-         public ResponseEntity<TokenDto> loginCustomer(@RequestBody LoginDto loginDto){
+         public ResponseEntity<CustomerTokenDto> loginCustomer(@RequestBody LoginDto loginDto){
             String token= customerService.loginCustomer(loginDto);
              HttpHeaders httpHeaders = new HttpHeaders();
              httpHeaders.add("Authorization", "Bearer " + token);
@@ -46,7 +44,7 @@ public class CustomerController {
             if(token==null){
                 state= HttpStatus.SC_UNAUTHORIZED;
             }
-             return new ResponseEntity<>(new TokenDto(token),httpHeaders,state);
+             return new ResponseEntity<>(new CustomerTokenDto(token),httpHeaders,state);
          }
 
          /*
