@@ -23,11 +23,14 @@ public class ManagerController {
     @ApiOperation("BO 로그인")
     @PostMapping("/bo/login")
     public ResponseEntity<ManagerTokenDto> loginCustomer(@RequestBody LoginDto loginDto){
-        ManagerTokenDto managerTokenDto= managerService.loginManager(loginDto);
+        ManagerTokenDto managerTokenDto= managerService.loginManager(loginDto); //가입승인이 된 관리자만 로그인 가능하다.
         HttpHeaders httpHeaders = new HttpHeaders();
+
+        if(managerTokenDto!=null&&managerTokenDto.getToken()!=null)
         httpHeaders.add("Authorization", "Bearer " + managerTokenDto.getToken());
-        int state= HttpStatus.SC_OK; //디폴트 성공 ^^
-        if(managerTokenDto.getToken()==null){
+
+        int state= HttpStatus.SC_OK;
+        if(managerTokenDto==null|| managerTokenDto.getToken()==null){
             state= HttpStatus.SC_UNAUTHORIZED;
         }
         return new ResponseEntity<>(managerTokenDto,httpHeaders,state);

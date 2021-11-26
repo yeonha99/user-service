@@ -29,8 +29,7 @@ public class ManagerService {
 
     public ManagerTokenDto loginManager(LoginDto loginDto){//관리자 로그인
 
-        BranchManager branchManager=branchManagerRepository.findById(loginDto.getId()).orElse(null);
-
+        BranchManager branchManager=branchManagerRepository.findByIdAndApproval(loginDto.getId(),true).orElse(null);
 
         if(branchManager!=null) {
             if (passwordEncoder.matches(loginDto.getPw(), branchManager.getPw())) {
