@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface BranchManagerRepository extends JpaRepository<BranchManager,String> {
     List<BranchManager> findAllByApproval(boolean approval);
+    Optional<BranchManager> findByIdAndApproval(String id,boolean approval);
 }
