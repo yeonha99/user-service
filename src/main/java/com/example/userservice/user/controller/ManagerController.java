@@ -4,6 +4,7 @@ import com.example.userservice.common.*;
 import com.example.userservice.user.domain.Manager;
 import com.example.userservice.user.dto.ManagerInfoDto;
 import com.example.userservice.user.service.ManagerService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ManagerController {
     private final ManagerService managerService;
     //로그인
+    @ApiOperation("BO 로그인")
     @PostMapping("/bo/login")
     public ResponseEntity<ManagerTokenDto> loginCustomer(@RequestBody LoginDto loginDto){
         ManagerTokenDto managerTokenDto= managerService.loginManager(loginDto);
@@ -30,6 +32,7 @@ public class ManagerController {
         }
         return new ResponseEntity<>(managerTokenDto,httpHeaders,state);
     }
+    @ApiOperation("BO 내 정보 확인")
     @GetMapping("/bo/info")//내 정보 확인
     public ResponseDto<Object> myInfo(HttpServletRequest request){
         String bearerToken = request.getHeader("Authorization");
@@ -40,7 +43,7 @@ public class ManagerController {
         }
         return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
     }
-
+    @ApiOperation("BO 내 정보 수정")
     @PutMapping("/bo/info")//내 정보 수정
     public ResponseDto<Object> myInfoUpdate(@RequestBody ManagerInfoDto managerInfoDto){
         return managerService.updateMyInfo(managerInfoDto);
