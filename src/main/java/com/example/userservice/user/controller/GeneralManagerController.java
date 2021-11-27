@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
+@CrossOrigin
 public class GeneralManagerController {
     private final GeneralManagerService generalManagerService;
     @ApiOperation("가입 승인 안받은 관리자들 목록")

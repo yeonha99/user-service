@@ -5,15 +5,13 @@ import com.example.userservice.user.service.TokenService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
+@CrossOrigin
 public class TokenController {
     private final TokenService tokenService;
 

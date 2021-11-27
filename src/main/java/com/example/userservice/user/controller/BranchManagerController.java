@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
+@CrossOrigin
 public class BranchManagerController {
     private final BranchManagerService branchManagerService;
 

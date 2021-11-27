@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ManagerController {
     private final ManagerService managerService;
     //로그인

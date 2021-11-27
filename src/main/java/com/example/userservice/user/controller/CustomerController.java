@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
+@CrossOrigin
 public class CustomerController {
 
         private final CustomerService customerService;
