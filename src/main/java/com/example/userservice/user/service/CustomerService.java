@@ -99,7 +99,7 @@ public class CustomerService {
     public ResponseDto<Object> deleteCustomer(String jwt, StringDto stringDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setResultCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
 
