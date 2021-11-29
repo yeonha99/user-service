@@ -20,9 +20,9 @@ public class TokenService {
         Object object=objectMap.get("user");
 
         if(object.equals(null)){
-            responseDto.setCode(HttpStatus.SC_UNAUTHORIZED);
+            responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
         }else{
-            responseDto.setCode(HttpStatus.SC_OK);
+            responseDto.setResultCode(HttpStatus.SC_OK);
             responseDto.setContext(object);
         }
         return responseDto;

@@ -3,8 +3,6 @@ package com.example.userservice.user.dto;
 import com.example.userservice.user.domain.Sex;
 import lombok.Builder;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
-
 import java.time.LocalDate;
 @Data
 @Builder

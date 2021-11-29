@@ -1,7 +1,6 @@
 package com.example.userservice.user.dto;
 
 import com.example.userservice.user.domain.Sex;
-import com.example.userservice.user.domain.UserInfo;
 import lombok.Data;
 
 import java.time.LocalDate;

@@ -60,7 +60,7 @@ public class CustomerService {
 
         Customer customer=customerRepository.findById(customerInfoDto.getId()).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setCode(HttpStatus.SC_UNAUTHORIZED);
+        responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
 
         //토큰 속 사람의 정보
         if(customer!=null){
@@ -70,7 +70,7 @@ public class CustomerService {
                             .phone_num(customerInfoDto.getPhoneNum())
                     .birthday(customerInfoDto.getBirthday())
                     .build());
-            responseDto.setCode(HttpStatus.SC_OK);
+            responseDto.setResultCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
@@ -80,7 +80,7 @@ public class CustomerService {
     public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보
@@ -89,7 +89,7 @@ public class CustomerService {
             //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
             customer.updatePw(passwordEncoder.encode(pwUpdateDto.getNewPw())); //변경 할때도 암호화 ^_^
 
-            responseDto.setCode(HttpStatus.SC_OK);
+            responseDto.setResultCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
@@ -99,14 +99,14 @@ public class CustomerService {
     public ResponseDto<Object> deleteCustomer(String jwt, StringDto stringDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
 
         if(customer!=null&&passwordEncoder.matches(stringDto.getString(), customer.getPw())) {
             //탈퇴 전 비밀번호 확인 ^ㅡ^
             customerRepository.delete(customer);
-            responseDto.setCode(HttpStatus.SC_OK);
+            responseDto.setResultCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
@@ -115,7 +115,7 @@ public class CustomerService {
     public ResponseDto<Object> getMyInfo(String jwt){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
 
         Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
@@ -135,7 +135,7 @@ public class CustomerService {
     public ResponseDto<Object> duplicateIdCheck(String id){
         Customer customer=customerRepository.findById(id).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_OK);
         if(customer==null){
             responseDto.setContext(BoolDto.builder().check(true).build());
         }else{

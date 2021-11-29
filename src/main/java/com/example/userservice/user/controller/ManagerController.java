@@ -44,7 +44,9 @@ public class ManagerController {
             return managerService.getMyInfo(bearerToken.substring(7));
 
         }
-        return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
+        ResponseDto responseDto=ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
+        System.out.println(responseDto.getContext());
+        return responseDto;
     }
     @ApiOperation("BO 내 정보 수정")
     @PutMapping("/bo/info")//내 정보 수정
