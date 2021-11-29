@@ -1,4 +1,4 @@
-package com.example.userservice.Jwt;
+package com.example.userservice.jwt;
 
 import com.example.userservice.common.UserDto;
 import io.jsonwebtoken.*;
@@ -33,10 +33,9 @@ public class JwtServiceImpl {
                     .parseClaimsJws(token)
                     .getBody();
         }catch (ExpiredJwtException e){
-            System.out.println("만료된 토큰");
             System.out.println(e);
         }catch (Exception e){
-            System.out.println("그 외 오류");
+
             System.out.println(e);
         }
         return claimMap;

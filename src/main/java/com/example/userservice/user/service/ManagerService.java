@@ -1,6 +1,6 @@
 package com.example.userservice.user.service;
 
-import com.example.userservice.Jwt.JwtServiceImpl;
+import com.example.userservice.jwt.JwtServiceImpl;
 import com.example.userservice.common.*;
 import com.example.userservice.user.client.StoreClient;
 import com.example.userservice.user.domain.*;
