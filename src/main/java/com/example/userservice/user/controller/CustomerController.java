@@ -7,8 +7,6 @@ import com.example.userservice.user.service.CustomerService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +20,6 @@ public class CustomerController {
 
         private final CustomerService customerService;
         static final String AUTHORIZATION ="Authorization";
-        static final String VALUE ="Bearer ";
 
         //회원가입
         @ApiOperation("FO 회원가입")
@@ -41,15 +38,16 @@ public class CustomerController {
          //로그인
          @ApiOperation("FO 로그인")
          @PostMapping("/login")
-         public ResponseEntity<CustomerTokenDto> loginCustomer(@Valid @RequestBody LoginDto loginDto){
+         public ResponseDto<Object> loginCustomer(@Valid @RequestBody LoginDto loginDto){
             String token= customerService.loginCustomer(loginDto);
-             HttpHeaders httpHeaders = new HttpHeaders();
-             httpHeaders.add(AUTHORIZATION, VALUE + token);
             int state=HttpStatus.SC_OK; //디폴트 성공 ^^
             if(token==null){
                 state= HttpStatus.SC_UNAUTHORIZED;
             }
-             return new ResponseEntity<>(new CustomerTokenDto(token),httpHeaders,state);
+             return ResponseDto.builder()
+                     .code(state)
+                     .context(CustomerTokenDto.builder().token(token).build())
+                     .build();
          }
 
 
@@ -58,8 +56,8 @@ public class CustomerController {
          public ResponseDto<Object> myInfo(HttpServletRequest request){
             String bearerToken = request.getHeader(AUTHORIZATION);
 
-            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(VALUE)) {
-             return customerService.getMyInfo(bearerToken.substring(7));
+            if (StringUtils.hasText(bearerToken)) {
+             return customerService.getMyInfo(bearerToken);
 
             }
         return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
@@ -75,8 +73,8 @@ public class CustomerController {
     public ResponseDto<Object> deleteCustomer(HttpServletRequest request,@Valid @RequestBody PwDto pwDto){
         String bearerToken = request.getHeader(AUTHORIZATION);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(VALUE)) {
-            return customerService.deleteCustomer(bearerToken.substring(7), pwDto);
+        if (StringUtils.hasText(bearerToken)) {
+            return customerService.deleteCustomer(bearerToken, pwDto);
         }
         return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
     }
@@ -85,8 +83,8 @@ public class CustomerController {
     public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@Valid @RequestBody PwUpdateDto pwUpdateDto){
         String bearerToken = request.getHeader(AUTHORIZATION);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(VALUE)) {
-            return customerService.updatePw(bearerToken.substring(7),pwUpdateDto);
+        if (StringUtils.hasText(bearerToken)) {
+            return customerService.updatePw(bearerToken,pwUpdateDto);
         }
         return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
     }
