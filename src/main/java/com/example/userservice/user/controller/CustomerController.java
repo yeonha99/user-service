@@ -73,11 +73,11 @@ public class CustomerController {
 
     @ApiOperation("FO 고객 탈퇴")
     @DeleteMapping("/info") // 고객 탈퇴
-    public ResponseDto<Object> deleteCustomer(HttpServletRequest request,@Valid @RequestBody StringDto stringDto){
+    public ResponseDto<Object> deleteCustomer(HttpServletRequest request,@Valid @RequestBody PwDto pwDto){
         String bearerToken = request.getHeader("Authorization");
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return customerService.deleteCustomer(bearerToken.substring(7),stringDto);
+            return customerService.deleteCustomer(bearerToken.substring(7), pwDto);
         }
         return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
     }

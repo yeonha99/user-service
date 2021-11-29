@@ -16,7 +16,7 @@ public class TokenService {
     //토큰까주는 기능
    public ResponseDto<Object> getAuthentication(String jwt) {
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
-        ResponseDto responseDto=ResponseDto.builder().build();
+        ResponseDto<Object> responseDto=ResponseDto.builder().build();
         Object object=objectMap.get("user");
 
         if(object.equals(null)){

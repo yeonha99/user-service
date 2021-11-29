@@ -29,7 +29,7 @@ public class BranchManagerService {
                 .birthday(managerCreateDto.getBirthday())
                 .name(managerCreateDto.getName())
                 .sex(managerCreateDto.getSex())
-                .phone_num(managerCreateDto.getPhoneNum()).build(), managerCreateDto.getStoreId());
+                .phoneNum(managerCreateDto.getPhoneNum()).build(), managerCreateDto.getStoreId());
         managerRepository.save(branchManager);
         return ResponseDto.builder()
                 .code(HttpStatus.SC_OK)
@@ -39,7 +39,7 @@ public class BranchManagerService {
 
     public ResponseDto<Object> duplicateIdCheck(String id){//관리자 아이디 중복 확인 검사
         Manager manager=managerRepository.findById(id).orElse(null);
-        ResponseDto responseDto=ResponseDto.builder().build();
+        ResponseDto<Object> responseDto=ResponseDto.builder().build();
         responseDto.setResultCode(HttpStatus.SC_OK);
         if(manager==null){
             responseDto.setContext(BoolDto.builder().check(true).build());
