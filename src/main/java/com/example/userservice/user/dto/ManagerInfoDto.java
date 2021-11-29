@@ -1,23 +1,25 @@
 package com.example.userservice.user.dto;
 
 import com.example.userservice.user.domain.Sex;
-import com.sun.istack.NotNull;
+
 import lombok.Builder;
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 @Data
 @Builder
 public class ManagerInfoDto {
-    @NotNull
+    @NotBlank
     private String id;
-    @NotNull
+    @NotBlank
     private String name;
-    @NotNull
+    @NotBlank
     private LocalDate birthday;
-    @NotNull
+    @NotBlank
     private Sex sex;
-    @NotNull
+    @NotBlank
     private String phoneNum;
-    @NotNull
+    @NotBlank
     private String storeName;
 }

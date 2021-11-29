@@ -21,7 +21,8 @@ import javax.validation.Valid;
 public class CustomerController {
 
         private final CustomerService customerService;
-
+        static final String AUTHORIZATION ="Authorization";
+        static final String VALUE ="Bearer ";
 
         //회원가입
         @ApiOperation("FO 회원가입")
@@ -34,7 +35,6 @@ public class CustomerController {
         @ApiOperation("FO 아이디 중복 확인")
          @GetMapping("/sign-up/{id}")
          public ResponseDto<Object> duplicateIdCheck(@PathVariable String id){
-             System.out.println(id);
             return customerService.duplicateIdCheck(id);
          }
 
@@ -44,7 +44,7 @@ public class CustomerController {
          public ResponseEntity<CustomerTokenDto> loginCustomer(@Valid @RequestBody LoginDto loginDto){
             String token= customerService.loginCustomer(loginDto);
              HttpHeaders httpHeaders = new HttpHeaders();
-             httpHeaders.add("Authorization", "Bearer " + token);
+             httpHeaders.add(AUTHORIZATION, VALUE + token);
             int state=HttpStatus.SC_OK; //디폴트 성공 ^^
             if(token==null){
                 state= HttpStatus.SC_UNAUTHORIZED;
@@ -56,9 +56,9 @@ public class CustomerController {
     @ApiOperation("FO 내 정보 확인")
          @GetMapping("/info")//내 정보 확인
          public ResponseDto<Object> myInfo(HttpServletRequest request){
-            String bearerToken = request.getHeader("Authorization");
+            String bearerToken = request.getHeader(AUTHORIZATION);
 
-            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(VALUE)) {
              return customerService.getMyInfo(bearerToken.substring(7));
 
             }
@@ -73,9 +73,9 @@ public class CustomerController {
     @ApiOperation("FO 고객 탈퇴")
     @DeleteMapping("/info") // 고객 탈퇴
     public ResponseDto<Object> deleteCustomer(HttpServletRequest request,@Valid @RequestBody PwDto pwDto){
-        String bearerToken = request.getHeader("Authorization");
+        String bearerToken = request.getHeader(AUTHORIZATION);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(VALUE)) {
             return customerService.deleteCustomer(bearerToken.substring(7), pwDto);
         }
         return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
@@ -83,9 +83,9 @@ public class CustomerController {
     @ApiOperation("FO 내 비밀번호 변경")
     @PutMapping("/info/pw") //내 비밀번호 변경
     public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@Valid @RequestBody PwUpdateDto pwUpdateDto){
-        String bearerToken = request.getHeader("Authorization");
+        String bearerToken = request.getHeader(AUTHORIZATION);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(VALUE)) {
             return customerService.updatePw(bearerToken.substring(7),pwUpdateDto);
         }
         return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();

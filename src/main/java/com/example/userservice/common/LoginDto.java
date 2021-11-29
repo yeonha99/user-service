@@ -1,7 +1,9 @@
 package com.example.userservice.common;
 
-import com.sun.istack.NotNull;
+
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 @Data
 public class LoginDto {

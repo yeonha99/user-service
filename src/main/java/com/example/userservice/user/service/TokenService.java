@@ -1,6 +1,6 @@
 package com.example.userservice.user.service;
 
-import com.example.userservice.Jwt.JwtServiceImpl;
+import com.example.userservice.jwt.JwtServiceImpl;
 import com.example.userservice.common.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
@@ -18,13 +18,8 @@ public class TokenService {
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto<Object> responseDto=ResponseDto.builder().build();
         Object object=objectMap.get("user");
-
-        if(object.equals(null)){
-            responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
-        }else{
-            responseDto.setResultCode(HttpStatus.SC_OK);
-            responseDto.setContext(object);
-        }
+        responseDto.setResultCode(HttpStatus.SC_OK);
+        responseDto.setContext(object);
         return responseDto;
 
     }

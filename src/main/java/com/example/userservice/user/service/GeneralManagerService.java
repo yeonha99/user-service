@@ -70,17 +70,17 @@ public class GeneralManagerService {
         return ResponseDto.builder().code(HttpStatus.SC_OK).build();
     }
 
-    public ResponseDto<Object> ManagerList(){ // 모든 관리자 목록 조회
+    public ResponseDto<Object> managerList(){ // 모든 관리자 목록 조회
         List<BranchManager> branchManagers=branchManagerRepository.findAllByApproval(true);
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
         for (BranchManager branchManager : branchManagers) {
-            String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+            String storeName= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
 
             preManager.add(ManagerInfoDto.builder()
                     .id(branchManager.getId())
                     .sex(branchManager.getUserInfo().getSex())
-                    .storeName(store_name)
+                    .storeName(storeName)
                     .name(branchManager.getUserInfo().getName())
                     .birthday(branchManager.getUserInfo().getBirthday())
                     .phoneNum(branchManager.getUserInfo().getPhoneNum())
