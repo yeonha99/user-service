@@ -1,7 +1,6 @@
 package com.example.userservice.user.controller;
 
 import com.example.userservice.common.*;
-import com.example.userservice.user.domain.Manager;
 import com.example.userservice.user.dto.ManagerInfoDto;
 import com.example.userservice.user.service.ManagerService;
 import io.swagger.annotations.ApiOperation;
@@ -20,6 +19,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class ManagerController {
     private final ManagerService managerService;
+    private final String Authorization="Authorization";
     //로그인
     @ApiOperation("BO 로그인")
     @PostMapping("/bo/login")
@@ -28,7 +28,7 @@ public class ManagerController {
         HttpHeaders httpHeaders = new HttpHeaders();
 
         if(managerTokenDto!=null&&managerTokenDto.getToken()!=null)
-        httpHeaders.add("Authorization", "Bearer " + managerTokenDto.getToken());
+        httpHeaders.add(Authorization, "Bearer " + managerTokenDto.getToken());
 
         int state= HttpStatus.SC_OK;
         if(managerTokenDto==null|| managerTokenDto.getToken()==null){
@@ -39,7 +39,7 @@ public class ManagerController {
     @ApiOperation("BO 내 정보 확인")
     @GetMapping("/bo/info")//내 정보 확인
     public ResponseDto<Object> myInfo(HttpServletRequest request){
-        String bearerToken = request.getHeader("Authorization");
+        String bearerToken = request.getHeader(Authorization);
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return managerService.getMyInfo(bearerToken.substring(7));

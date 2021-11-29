@@ -29,15 +29,15 @@ public class GeneralManagerService {
 
         for (BranchManager branchManager : branchManagers) {
 
-            String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+            String storeName= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
 
             preManager.add(ManagerInfoDto.builder()
                             .id(branchManager.getId())
                             .sex(branchManager.getUserInfo().getSex())
-                            .storeName(store_name)
+                            .storeName(storeName)
                             .name(branchManager.getUserInfo().getName())
                             .birthday(branchManager.getUserInfo().getBirthday())
-                            .phoneNum(branchManager.getUserInfo().getPhone_num())
+                            .phoneNum(branchManager.getUserInfo().getPhoneNum())
                     .build());
         }
 
@@ -48,9 +48,9 @@ public class GeneralManagerService {
     }
 
     @Transactional
-    public ResponseDto<Object> ApprovalManager(String id){
+    public ResponseDto<Object> approvalManager(String id){
         BranchManager branchManager=branchManagerRepository.findById(id).orElse(null);
-        System.out.println(branchManager);
+
         if(branchManager!=null){
             branchManager.approvalManager(); //가입 승인으로 변경
         }
@@ -61,7 +61,7 @@ public class GeneralManagerService {
     @Transactional
     public ResponseDto<Object> deleteManager(String id){
         BranchManager branchManager=branchManagerRepository.findById(id).orElse(null);
-        System.out.println(branchManager);
+
 
         if(branchManager!=null){
             branchManagerRepository.delete(branchManager);//관리자 삭제
@@ -83,7 +83,7 @@ public class GeneralManagerService {
                     .storeName(store_name)
                     .name(branchManager.getUserInfo().getName())
                     .birthday(branchManager.getUserInfo().getBirthday())
-                    .phoneNum(branchManager.getUserInfo().getPhone_num())
+                    .phoneNum(branchManager.getUserInfo().getPhoneNum())
                     .build());
         }
 

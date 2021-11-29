@@ -31,10 +31,9 @@ public class ManagerService {
 
         BranchManager branchManager=branchManagerRepository.findByIdAndApproval(loginDto.getId(),true).orElse(null);
 
-        if(branchManager!=null) {
-            if (passwordEncoder.matches(loginDto.getPw(), branchManager.getPw())) {
+        if(branchManager!=null&&passwordEncoder.matches(loginDto.getPw(), branchManager.getPw())) {
                 //아이디 비번 일치 하면 일반 관리자 구분
-                System.out.println("지점 관리자 비밀번호 일치 함");
+
                 String storeName=(String) storeClient.findStoreName(branchManager.getStoreId()).get("storeName");
                 return ManagerTokenDto.builder()
                         .storeId(branchManager.getStoreId())
@@ -43,15 +42,14 @@ public class ManagerService {
                         .storeName(storeName)
                         .build();
 
-            }
+
         }
 
         GeneralManager generalManager=generalManagerRepository.findById(loginDto.getId()).orElse(null);
 
-        if(generalManager!=null){
-            if(passwordEncoder.matches(loginDto.getPw(), generalManager.getPw())){
+        if(generalManager!=null&&passwordEncoder.matches(loginDto.getPw(), generalManager.getPw())){
                 //총 관리자 구분
-                System.out.println("총 관리자 비밀번호 일치 함");
+
 
                 return ManagerTokenDto.builder()
                         .token(jwtService.createToken(UserDto.builder().id(generalManager.getId()).role("GM").build()))
@@ -60,7 +58,7 @@ public class ManagerService {
                         .storeName("총 관리자")
                         .build();
 
-            }
+
         }
         return null;
     }
@@ -70,25 +68,25 @@ public class ManagerService {
     public ResponseDto<Object> getMyInfo(String jwt){
 
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
-        ResponseDto responseDto=ResponseDto.builder().build();
+        ResponseDto<Object> responseDto=ResponseDto.builder().build();
         responseDto.setResultCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         String role= (String) user.get("role");
-        System.out.println(role);
+
         if (role.equals("BM")){//지점 관리일 경우
-            System.out.println("이프문 들어옴");
+
 
             BranchManager branchManager =branchManagerRepository.findById((String) user.get("id")).orElse(null);
-            System.out.println(branchManager.getClass());
+
             if(branchManager!=null) {
-                String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+                String storeName= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
                 responseDto.setContext(ManagerInfoDto.builder()
                         .birthday(branchManager.getUserInfo().getBirthday())
                         .sex(branchManager.getUserInfo().getSex())
                         .name(branchManager.getUserInfo().getName())
-                        .phoneNum(branchManager.getUserInfo().getPhone_num())
+                        .phoneNum(branchManager.getUserInfo().getPhoneNum())
                         .id(branchManager.getId())
-                        .storeName(store_name)
+                        .storeName(storeName)
                         .build()
                 );
             }
@@ -103,7 +101,7 @@ public class ManagerService {
                         .birthday(generalManager.getUserInfo().getBirthday())
                         .sex(generalManager.getUserInfo().getSex())
                         .name(generalManager.getUserInfo().getName())
-                        .phoneNum(generalManager.getUserInfo().getPhone_num())
+                        .phoneNum(generalManager.getUserInfo().getPhoneNum())
                         .id(generalManager.getId())
                         .storeName("총 관리자")
                         .build());
@@ -116,12 +114,12 @@ public class ManagerService {
     @Transactional
     public ResponseDto<Object> updateMyInfo(ManagerInfoDto managerInfoDto) {
         Manager manager=managerRepository.findById(managerInfoDto.getId()).orElse(null);
-        ResponseDto responseDto=ResponseDto.builder().build();
+        ResponseDto<Object> responseDto=ResponseDto.builder().build();
         responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
 
         if(manager!=null){
             manager.updateManager(UserInfo.builder()
-                            .phone_num(managerInfoDto.getPhoneNum())
+                    .phoneNum(managerInfoDto.getPhoneNum())
                             .sex(managerInfoDto.getSex())
                             .name(managerInfoDto.getName())
                             .birthday(managerInfoDto.getBirthday())
@@ -137,7 +135,7 @@ public class ManagerService {
     @Transactional
     public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
-        ResponseDto responseDto=ResponseDto.builder().build();
+        ResponseDto<Object> responseDto=ResponseDto.builder().build();
         responseDto.setResultCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         Manager manager=managerRepository.findById((String) user.get("id")).orElse(null);
@@ -154,11 +152,11 @@ public class ManagerService {
 
 
     public ManagerInfoDto getInfoById(String id) {
-        Manager manager= managerRepository.getById(id);
+        Manager manager= managerRepository.findById(id).orElse(null);
         if(manager!=null){
 
             return ManagerInfoDto.builder()
-                    .phoneNum(manager.getUserInfo().getPhone_num())
+                    .phoneNum(manager.getUserInfo().getPhoneNum())
                     .birthday(manager.getUserInfo().getBirthday())
                     .id(manager.getId())
                     .name(manager.getUserInfo().getName())

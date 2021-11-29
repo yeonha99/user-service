@@ -1,13 +1,11 @@
 package com.example.userservice.user.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.time.LocalDate;
 
 @Getter
 @Entity

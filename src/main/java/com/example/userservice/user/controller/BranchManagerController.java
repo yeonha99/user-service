@@ -26,7 +26,7 @@ public class BranchManagerController {
     @ApiOperation("아이디 중복 확인")
     @GetMapping("/bo/sign-up/{id}")
     public ResponseDto<Object> duplicateIdCheck(@PathVariable String id){
-        System.out.println(id);
+
         return branchManagerService.duplicateIdCheck(id);
     }
 

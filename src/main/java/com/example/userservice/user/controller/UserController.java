@@ -1,6 +1,5 @@
 package com.example.userservice.user.controller;
 
-import com.example.userservice.common.UserNameIdDto;
 import com.example.userservice.user.dto.CustomerInfoDto;
 import com.example.userservice.user.dto.ManagerInfoDto;
 import com.example.userservice.user.service.CustomerService;

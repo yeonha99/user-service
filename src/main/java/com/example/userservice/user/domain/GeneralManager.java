@@ -4,8 +4,4 @@ import javax.persistence.Entity;
 
 @Entity
 public class GeneralManager extends Manager{
-    public GeneralManager() {
-    }
-
-
 }

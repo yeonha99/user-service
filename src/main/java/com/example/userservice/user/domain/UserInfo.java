@@ -25,19 +25,19 @@ public class UserInfo {
     private Sex sex;
 
     @Column(unique = true, nullable = false)
-    private String phone_num;
+    private String phoneNum;
 
     @Builder
-    public UserInfo(String name, LocalDate birthday, Sex sex, String phone_num) {
+    public UserInfo(String name, LocalDate birthday, Sex sex, String phoneNum) {
         this.name = name;
         this.birthday = birthday;
         this.sex = sex;
-        this.phone_num = phone_num;
+        this.phoneNum = phoneNum;
     }
 
     public void updateInfo(UserInfo userInfo){
         if(userInfo.name!=null)this.name=userInfo.name;
-        if(userInfo.phone_num!=null)this.phone_num=userInfo.phone_num;
+        if(userInfo.phoneNum!=null)this.phoneNum=userInfo.phoneNum;
         if(userInfo.birthday!=null)this.birthday=userInfo.birthday;
         if(userInfo.sex!=null)this.sex=userInfo.sex;
     }
