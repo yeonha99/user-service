@@ -71,7 +71,7 @@ public class ManagerService {
 
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         String role= (String) user.get("role");
         System.out.println(role);
@@ -81,13 +81,14 @@ public class ManagerService {
             BranchManager branchManager =branchManagerRepository.findById((String) user.get("id")).orElse(null);
             System.out.println(branchManager.getClass());
             if(branchManager!=null) {
-
+                String store_name= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
                 responseDto.setContext(ManagerInfoDto.builder()
                         .birthday(branchManager.getUserInfo().getBirthday())
                         .sex(branchManager.getUserInfo().getSex())
                         .name(branchManager.getUserInfo().getName())
                         .phoneNum(branchManager.getUserInfo().getPhone_num())
                         .id(branchManager.getId())
+                        .storeName(store_name)
                         .build()
                 );
             }
@@ -104,6 +105,7 @@ public class ManagerService {
                         .name(generalManager.getUserInfo().getName())
                         .phoneNum(generalManager.getUserInfo().getPhone_num())
                         .id(generalManager.getId())
+                        .storeName("총 관리자")
                         .build());
             }
        }
@@ -115,7 +117,7 @@ public class ManagerService {
     public ResponseDto<Object> updateMyInfo(ManagerInfoDto managerInfoDto) {
         Manager manager=managerRepository.findById(managerInfoDto.getId()).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setCode(HttpStatus.SC_UNAUTHORIZED);
+        responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
 
         if(manager!=null){
             manager.updateManager(UserInfo.builder()
@@ -125,7 +127,7 @@ public class ManagerService {
                             .birthday(managerInfoDto.getBirthday())
                     .build());
 
-            responseDto.setCode(HttpStatus.SC_OK);
+            responseDto.setResultCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
@@ -136,7 +138,7 @@ public class ManagerService {
     public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_OK);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         Manager manager=managerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보

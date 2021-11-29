@@ -1,12 +1,8 @@
 package com.example.userservice.user.service;
 
-import com.example.userservice.Jwt.JwtServiceImpl;
 import com.example.userservice.common.BoolDto;
-import com.example.userservice.common.LoginDto;
 import com.example.userservice.common.ResponseDto;
-import com.example.userservice.common.UserDto;
 import com.example.userservice.user.domain.BranchManager;
-import com.example.userservice.user.domain.Customer;
 import com.example.userservice.user.domain.Manager;
 import com.example.userservice.user.domain.UserInfo;
 import com.example.userservice.user.dto.ManagerCreateDto;
@@ -22,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class BranchManagerService {
     private final ManagerRepository managerRepository;
-    private final JwtServiceImpl jwtService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -45,7 +40,7 @@ public class BranchManagerService {
     public ResponseDto<Object> duplicateIdCheck(String id){//관리자 아이디 중복 확인 검사
         Manager manager=managerRepository.findById(id).orElse(null);
         ResponseDto responseDto=ResponseDto.builder().build();
-        responseDto.setCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_OK);
         if(manager==null){
             responseDto.setContext(BoolDto.builder().check(true).build());
         }else{

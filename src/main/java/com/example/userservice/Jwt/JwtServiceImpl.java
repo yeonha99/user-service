@@ -3,8 +3,6 @@ package com.example.userservice.Jwt;
 import com.example.userservice.common.UserDto;
 import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
-
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 

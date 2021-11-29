@@ -3,12 +3,8 @@ package com.example.userservice.user.service;
 import com.example.userservice.common.ResponseDto;
 import com.example.userservice.user.client.StoreClient;
 import com.example.userservice.user.domain.BranchManager;
-import com.example.userservice.user.domain.Customer;
-import com.example.userservice.user.domain.Manager;
 import com.example.userservice.user.dto.ManagerInfoDto;
 import com.example.userservice.user.repository.BranchManagerRepository;
-import com.example.userservice.user.repository.CustomerRepository;
-import com.example.userservice.user.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -22,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class GeneralManagerService {
-    private final ManagerRepository managerRepository;
     private final BranchManagerRepository branchManagerRepository;
     private final StoreClient storeClient;
 

@@ -1,6 +1,5 @@
 package com.example.userservice.user.domain;
 
-import com.sun.istack.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

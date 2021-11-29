@@ -7,13 +7,13 @@ import lombok.Getter;
 @Data
 @Getter
 public class ResponseDto<T> {
-    private int code;
+    private int resultCode;
     private T context;
 
     @Builder
     public ResponseDto(int code, T context){
         this.context=context;
-        this.code=code;
+        this.resultCode=code;
     }
 
 

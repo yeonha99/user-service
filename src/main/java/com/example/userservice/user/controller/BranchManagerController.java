@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class BranchManagerController {
     //관리자 가입
     @ApiOperation("관리자 가입")
     @PostMapping("/bo/sign-up")
-    public ResponseDto<Object> createManager(@RequestBody ManagerCreateDto managerCreateDto){
+    public ResponseDto<Object> createManager(@Valid @RequestBody ManagerCreateDto managerCreateDto){
         return branchManagerService.createManager(managerCreateDto);
     }
 
