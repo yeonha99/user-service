@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user-service")
@@ -25,7 +26,7 @@ public class CustomerController {
         //회원가입
         @ApiOperation("FO 회원가입")
         @PostMapping("/sign-up")
-        public ResponseDto<Object> createCustomer(@RequestBody CustomerCreateDto customerCreateDto){
+        public ResponseDto<Object> createCustomer(@Valid @RequestBody CustomerCreateDto customerCreateDto){
             return customerService.createCustomer(customerCreateDto);
         }
 
@@ -40,7 +41,7 @@ public class CustomerController {
          //로그인
          @ApiOperation("FO 로그인")
          @PostMapping("/login")
-         public ResponseEntity<CustomerTokenDto> loginCustomer(@RequestBody LoginDto loginDto){
+         public ResponseEntity<CustomerTokenDto> loginCustomer(@Valid @RequestBody LoginDto loginDto){
             String token= customerService.loginCustomer(loginDto);
              HttpHeaders httpHeaders = new HttpHeaders();
              httpHeaders.add("Authorization", "Bearer " + token);
@@ -50,18 +51,6 @@ public class CustomerController {
             }
              return new ResponseEntity<>(new CustomerTokenDto(token),httpHeaders,state);
          }
-
-         /*
-         @GetMapping("/token") //토큰 해석
-        public ResponseDto<Object> getAuthentication(HttpServletRequest request){
-             String bearerToken = request.getHeader("Authorization");
-
-             if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-                 return customerService.getAuthentication(bearerToken.substring(7));
-             }
-            return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
-         }
-          */
 
 
     @ApiOperation("FO 내 정보 확인")
@@ -77,13 +66,13 @@ public class CustomerController {
          }
     @ApiOperation("FO 내 정보 수정")
     @PutMapping("/info")//내 정보 수정
-    public ResponseDto<Object> myInfoUpdate(@RequestBody CustomerInfoDto customerInfoDto){
+    public ResponseDto<Object> myInfoUpdate(@Valid @RequestBody CustomerInfoDto customerInfoDto){
             return customerService.updateMyInfo(customerInfoDto);
     }
 
     @ApiOperation("FO 고객 탈퇴")
     @DeleteMapping("/info") // 고객 탈퇴
-    public ResponseDto<Object> deleteCustomer(HttpServletRequest request,@RequestBody StringDto stringDto){
+    public ResponseDto<Object> deleteCustomer(HttpServletRequest request,@Valid @RequestBody StringDto stringDto){
         String bearerToken = request.getHeader("Authorization");
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
@@ -93,7 +82,7 @@ public class CustomerController {
     }
     @ApiOperation("FO 내 비밀번호 변경")
     @PutMapping("/info/pw") //내 비밀번호 변경
-    public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@RequestBody PwUpdateDto pwUpdateDto){
+    public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@Valid @RequestBody PwUpdateDto pwUpdateDto){
         String bearerToken = request.getHeader("Authorization");
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {

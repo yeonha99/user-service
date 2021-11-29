@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/user-service")
@@ -22,7 +23,7 @@ public class ManagerController {
     //로그인
     @ApiOperation("BO 로그인")
     @PostMapping("/bo/login")
-    public ResponseEntity<ManagerTokenDto> loginCustomer(@RequestBody LoginDto loginDto){
+    public ResponseEntity<ManagerTokenDto> loginCustomer(@Valid @RequestBody LoginDto loginDto){
         ManagerTokenDto managerTokenDto= managerService.loginManager(loginDto); //가입승인이 된 관리자만 로그인 가능하다.
         HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -50,12 +51,12 @@ public class ManagerController {
     }
     @ApiOperation("BO 내 정보 수정")
     @PutMapping("/bo/info")//내 정보 수정
-    public ResponseDto<Object> myInfoUpdate(@RequestBody ManagerInfoDto managerInfoDto){
+    public ResponseDto<Object> myInfoUpdate(@Valid @RequestBody ManagerInfoDto managerInfoDto){
         return managerService.updateMyInfo(managerInfoDto);
     }
 
     @PutMapping("/bo/info/pw")//내 비밀번호 수정
-    public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@RequestBody PwUpdateDto pwUpdateDto){
+    public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@Valid @RequestBody PwUpdateDto pwUpdateDto){
         String bearerToken=request.getHeader("Authorization");
         if(StringUtils.hasText(bearerToken)&&bearerToken.startsWith("Bearer ")){
             return managerService.updatePw(bearerToken.substring(7),pwUpdateDto);
