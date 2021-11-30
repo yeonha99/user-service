@@ -7,6 +7,9 @@ import com.example.userservice.user.dto.ManagerInfoDto;
 import com.example.userservice.user.repository.BranchManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,13 +26,14 @@ public class GeneralManagerService {
 
 
 
-    public ResponseDto<Object> listApprovalRequests(){ //가입 승인 요청한 관리자들 목록
-        List<BranchManager> branchManagers=branchManagerRepository.findAllByApproval(false);
+    public ResponseDto<Object> listApprovalRequests(Pageable pageable){ //가입 승인 요청한 관리자들 목록
+        Page<BranchManager> branchManagers=branchManagerRepository.findAllByApproval(false, pageable);
+
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
         for (BranchManager branchManager : branchManagers) {
 
-            String storeName= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+           String storeName= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
 
             preManager.add(ManagerInfoDto.builder()
                             .id(branchManager.getId())
@@ -42,7 +46,7 @@ public class GeneralManagerService {
         }
 
         if(branchManagers!=null) {
-            return ResponseDto.builder().context(preManager).code(HttpStatus.SC_OK).build();
+            return ResponseDto.builder().context(preManager).code(HttpStatus.SC_OK).totalPage(branchManagers.getTotalPages()).build();
         }
         else return ResponseDto.builder().code(HttpStatus.SC_BAD_REQUEST).build();
     }
@@ -70,12 +74,12 @@ public class GeneralManagerService {
         return ResponseDto.builder().code(HttpStatus.SC_OK).build();
     }
 
-    public ResponseDto<Object> managerList(){ // 모든 관리자 목록 조회
-        List<BranchManager> branchManagers=branchManagerRepository.findAllByApproval(true);
+    public ResponseDto<Object> managerList(Pageable pageable){ // 모든 관리자 목록 조회
+        Page <BranchManager> branchManagers=branchManagerRepository.findAllByApproval(true,pageable);
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
         for (BranchManager branchManager : branchManagers) {
-            String storeName= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+           String storeName= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
 
             preManager.add(ManagerInfoDto.builder()
                     .id(branchManager.getId())
@@ -88,7 +92,7 @@ public class GeneralManagerService {
         }
 
         if(branchManagers!=null) {
-            return ResponseDto.builder().context(preManager).code(HttpStatus.SC_OK).build();
+            return ResponseDto.builder().context(preManager).code(HttpStatus.SC_OK).totalPage(branchManagers.getTotalPages()).build();
         }
         else return ResponseDto.builder().code(HttpStatus.SC_BAD_REQUEST).build();
     }
