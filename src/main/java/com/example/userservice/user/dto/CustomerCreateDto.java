@@ -2,22 +2,21 @@ package com.example.userservice.user.dto;
 
 import com.example.userservice.user.domain.Sex;
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Data
 public class CustomerCreateDto {
-    @NotBlank
+    @NotNull
     private String id;
-    @NotBlank
+    @NotNull
     private String pw;
-    @NotBlank
+    @NotNull
     private String name;
-    @NotBlank
+    @NotNull
     private LocalDate birthday;
-
+    @NotNull
     private Sex sex;
-    @NotBlank
+    @NotNull
     private String phoneNum;
 }
