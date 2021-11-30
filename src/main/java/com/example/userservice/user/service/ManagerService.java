@@ -34,7 +34,8 @@ public class ManagerService {
         if(branchManager!=null&&passwordEncoder.matches(loginDto.getPw(), branchManager.getPw())) {
                 //아이디 비번 일치 하면 일반 관리자 구분
 
-                String storeName=(String) storeClient.findStoreName(branchManager.getStoreId()).get("storeName");
+                Map<String,Object> objectMap= ((Map<String, Object>) storeClient.findStoreName(branchManager.getStoreId()).get("context"));
+                String storeName=(String) objectMap.get("name");
                 return ManagerTokenDto.builder()
                         .storeId(branchManager.getStoreId())
                         .token(jwtService.createToken(UserDto.builder().id(branchManager.getId()).role("BM").build()))
