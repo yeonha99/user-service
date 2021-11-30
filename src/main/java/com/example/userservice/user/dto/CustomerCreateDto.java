@@ -16,7 +16,7 @@ public class CustomerCreateDto {
     private String name;
     @NotBlank
     private LocalDate birthday;
-    @NotBlank
+
     private Sex sex;
     @NotBlank
     private String phoneNum;
