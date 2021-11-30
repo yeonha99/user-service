@@ -1,5 +1,6 @@
 package com.example.userservice.user.controller;
 
+import com.example.userservice.common.IdDto;
 import com.example.userservice.common.ResponseDto;
 import com.example.userservice.user.service.GeneralManagerService;
 import io.swagger.annotations.ApiOperation;
@@ -24,9 +25,9 @@ public class GeneralManagerController {
 
     @ApiOperation("가입 승인하기")
     @PutMapping("/pre-manager")//가입 승인하기
-    public ResponseDto<Object> preManagerApproval(@RequestParam("id") String id){
+    public ResponseDto<Object> preManagerApproval(@RequestBody IdDto idDto){
 
-        return generalManagerService.approvalManager(id);
+        return generalManagerService.approvalManager(idDto.getId());
     }
 
     @ApiOperation("가입 승인 불통")

@@ -79,7 +79,7 @@ public class CustomerService {
     public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto<Object> responseDto=ResponseDto.builder().build();
-        responseDto.setResultCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보
@@ -107,6 +107,7 @@ public class CustomerService {
             customerRepository.delete(customer);
             responseDto.setResultCode(HttpStatus.SC_OK);
         }
+        responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
         return responseDto;
     }
 
@@ -114,7 +115,7 @@ public class CustomerService {
     public ResponseDto<Object> getMyInfo(String jwt){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto<Object> responseDto=ResponseDto.builder().build();
-        responseDto.setResultCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
 
         Customer customer=customerRepository.findById((String) user.get("id")).orElse(null);
@@ -125,7 +126,9 @@ public class CustomerService {
                     .sex(customer.getUserInfo().getSex())
                     .phoneNum(customer.getUserInfo().getPhoneNum()).build();
             responseDto.setContext(customerInfoDto);
+            responseDto.setContext(HttpStatus.SC_UNAUTHORIZED);
         }
+
         return responseDto;
     }
 

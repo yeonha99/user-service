@@ -6,12 +6,12 @@ spring:
     name: user-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://3.36.55.65:3306/user?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: admin
-    password: uplus3zzangzzang
-    #url: jdbc:mysql://localhost:3306/user?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    #username: root
-    #3password: Dusgmlxhrl1!
+    #url: jdbc:mysql://3.36.55.65:3306/user?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    #username: admin
+    #password: uplus3zzangzzang
+    url: jdbc:mysql://localhost:3306/user?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: Dusgmlxhrl1!
 
 
   jpa:
@@ -28,7 +28,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://172.20.113.40:8761/eureka/ # localhost 3.38.100.161
+      defaultZone: http://localhost:8761/eureka/ # localhost 3.38.100.161
 
 
 
