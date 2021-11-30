@@ -19,7 +19,6 @@ import javax.validation.Valid;
 public class ManagerController {
     private final ManagerService managerService;
     static final String AUTHORIZATION ="Authorization";
-    static final String VALUE ="Bearer ";
     //로그인
     @ApiOperation("BO 로그인")
     @PostMapping("/bo/login")
@@ -41,8 +40,8 @@ public class ManagerController {
     public ResponseDto<Object> myInfo(HttpServletRequest request){
         String bearerToken = request.getHeader(AUTHORIZATION);
 
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(VALUE)) {
-            return managerService.getMyInfo(bearerToken.substring(7));
+        if (StringUtils.hasText(bearerToken)) {
+            return managerService.getMyInfo(bearerToken);
 
         }
 
@@ -59,8 +58,8 @@ public class ManagerController {
     @PutMapping("/bo/info/pw")//내 비밀번호 수정
     public ResponseDto<Object> myPwUpdate(HttpServletRequest request,@Valid @RequestBody PwUpdateDto pwUpdateDto){
         String bearerToken=request.getHeader(AUTHORIZATION);
-        if(StringUtils.hasText(bearerToken)&&bearerToken.startsWith(VALUE)){
-            return managerService.updatePw(bearerToken.substring(7),pwUpdateDto);
+        if(StringUtils.hasText(bearerToken)){
+            return managerService.updatePw(bearerToken,pwUpdateDto);
         }
         return ResponseDto.builder().code(HttpStatus.SC_UNAUTHORIZED).build();
 
