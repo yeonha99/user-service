@@ -4,20 +4,20 @@ import com.example.userservice.user.domain.Sex;
 
 import lombok.Builder;
 import lombok.Data;
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 @Data
 @Builder
 public class CustomerInfoDto {
-    @NotBlank
+    @NotNull
     private String id;
-    @NotBlank
+    @NotNull
     private String name;
-    @NotBlank
+    @NotNull
     private LocalDate birthday;
-
+    @NotNull
     private Sex sex;
-    @NotBlank
+    @NotNull
     private String phoneNum;
 }
