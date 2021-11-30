@@ -15,7 +15,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
-@CrossOrigin
 public class ManagerController {
     private final ManagerService managerService;
     static final String AUTHORIZATION ="Authorization";

@@ -12,7 +12,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
-@CrossOrigin
 public class BranchManagerController {
     private final BranchManagerService branchManagerService;
 

@@ -11,7 +11,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
-@CrossOrigin
 public class TokenController {
     private final TokenService tokenService;
 

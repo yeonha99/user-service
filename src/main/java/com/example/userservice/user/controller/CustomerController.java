@@ -16,7 +16,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
-@CrossOrigin
 public class CustomerController {
 
         private final CustomerService customerService;
