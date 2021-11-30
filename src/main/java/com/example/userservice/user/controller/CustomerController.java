@@ -69,7 +69,7 @@ public class CustomerController {
     }
 
     @ApiOperation("FO 고객 탈퇴")
-    @DeleteMapping("/info") // 고객 탈퇴
+    @PostMapping("/info/pw") // 고객 탈퇴
     public ResponseDto<Object> deleteCustomer(HttpServletRequest request,@Valid @RequestBody PwDto pwDto){
         String bearerToken = request.getHeader(AUTHORIZATION);
 
