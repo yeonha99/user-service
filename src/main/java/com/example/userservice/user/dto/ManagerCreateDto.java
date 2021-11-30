@@ -3,8 +3,6 @@ package com.example.userservice.user.dto;
 import com.example.userservice.user.domain.Sex;
 
 import lombok.Data;
-
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 @Data
