@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -33,7 +34,8 @@ public class GeneralManagerService {
 
         for (BranchManager branchManager : branchManagers) {
 
-           String storeName= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+            Map<String,Object> objectMap= ((Map<String, Object>) storeClient.findStoreName(branchManager.getStoreId()).get("context"));
+            String storeName=(String) objectMap.get("name");
 
             preManager.add(ManagerInfoDto.builder()
                             .id(branchManager.getId())
@@ -79,7 +81,8 @@ public class GeneralManagerService {
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
         for (BranchManager branchManager : branchManagers) {
-           String storeName= (String) storeClient.findStoreName(branchManager.getStoreId()).get("store_name");
+            Map<String,Object> objectMap= ((Map<String, Object>) storeClient.findStoreName(branchManager.getStoreId()).get("context"));
+            String storeName=(String) objectMap.get("name");
 
             preManager.add(ManagerInfoDto.builder()
                     .id(branchManager.getId())

@@ -8,7 +8,7 @@ import java.util.Map;
 @FeignClient(name="store-service")
 public interface StoreClient {
 
-    @GetMapping("/manager/store-name")//매장 id에 따른 이름 하나만 받아오기
+    @GetMapping("/store-service/manager/store-name")//매장 id에 따른 이름 하나만 받아오기
     Map<String,Object> findStoreName(@RequestParam int storeId);
 
 }
