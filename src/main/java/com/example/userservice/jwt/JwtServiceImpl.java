@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.Map;
 
+
 @Component
 public class JwtServiceImpl {
     private String secretKey = "lg-uplus-team3-secret-key-lg-uplus-team3-secret-key"; // 서명에 사용할 secretKey
@@ -33,10 +34,10 @@ public class JwtServiceImpl {
                     .parseClaimsJws(token)
                     .getBody();
         }catch (ExpiredJwtException e){
-            System.out.println(e);
-        }catch (Exception e){
+            throw e;
 
-            System.out.println(e);
+        }catch (Exception e){
+         throw e;
         }
         return claimMap;
 
