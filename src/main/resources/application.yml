@@ -28,7 +28,7 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://a7f9443d24006441fa3d51c97e8a3acc-1892618396.ap-northeast-2.elb.amazonaws.com:8761/eureka/ # localhost 3.38.100.161
+      defaultZone: http://172.20.144.76:8761/eureka/ # localhost 3.38.100.161
 
 
 
