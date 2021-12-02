@@ -146,7 +146,7 @@ public class CustomerService {
         return responseDto;
     }
 
-
+//고객 아이디에 따른 정보 가져오기 기능
     public CustomerInfoDto getInfoById(String id) {
         Customer customer=customerRepository.findById(id).orElse(null);
         if(customer!=null){

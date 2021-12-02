@@ -152,6 +152,7 @@ public class ManagerService {
     }
 
 
+    //id에 따라 관리자의 정보 가져오는 기능
     public ManagerInfoDto getInfoById(String id) {
         Manager manager= managerRepository.findById(id).orElse(null);
         if(manager!=null){

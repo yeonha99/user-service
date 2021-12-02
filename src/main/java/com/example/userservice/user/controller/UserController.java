@@ -25,7 +25,7 @@ public class UserController {
         return null;
     }
 
-    @ApiOperation("관리자 아이디에 따라 정보 가져오기ㅣ")
+    @ApiOperation("관리자 아이디에 따라 정보 가져오기")
     @GetMapping("/manager-info")//관리자 아이디에 따라 정보 가져오기ㅣ
     public ManagerInfoDto managerInfo(@RequestParam("id") String id){
         ManagerInfoDto managerInfoDto=managerService.getInfoById(id);

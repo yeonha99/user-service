@@ -31,10 +31,10 @@ public class GeneralManagerService {
 
         List<ManagerInfoDto> preManager=new ArrayList<>();
 
-        for (BranchManager branchManager : branchManagers) {
+        for (BranchManager branchManager : branchManagers) {//페이징 처리된 매니저 목록 dto에 담아내기
 
             Map<String,Object> objectMap= ((Map<String, Object>) storeClient.findStoreName(branchManager.getStoreId()).get("context"));
-            String storeName=(String) objectMap.get("name");
+            String storeName=(String) objectMap.get("name");//보낼때 매장 아이디를 보내달라고 해서 찾아서 보내는 로직
 
             preManager.add(ManagerInfoDto.builder()
                             .id(branchManager.getId())
