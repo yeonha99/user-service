@@ -107,7 +107,7 @@ public class CustomerService {
             customerRepository.delete(customer);
             responseDto.setResultCode(HttpStatus.SC_OK);
         }
-        responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
+        else responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
         return responseDto;
     }
 
