@@ -7,7 +7,7 @@ import com.example.userservice.user.service.ManagerService;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin
+
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
