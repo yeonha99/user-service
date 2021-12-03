@@ -137,7 +137,7 @@ public class ManagerService {
     public ResponseDto<Object> updatePw(String jwt, PwUpdateDto pwUpdateDto){
         Map<String, Object> objectMap=jwtService.getInfo(jwt);
         ResponseDto<Object> responseDto=ResponseDto.builder().build();
-        responseDto.setResultCode(HttpStatus.SC_OK);
+        responseDto.setResultCode(HttpStatus.SC_UNAUTHORIZED);
         Map<String,Object> user = (Map<String, Object>) objectMap.get("user");
         Manager manager=managerRepository.findById((String) user.get("id")).orElse(null);
         //토큰 속 사람의 정보
@@ -146,7 +146,7 @@ public class ManagerService {
             //토큰 속 사람의 이전 비밀번호와 폼에서 보낸 이전 비밀번호가 같을 시에만 변경 로직 돌아가게 설정함
 
             manager.updatePw(passwordEncoder.encode(pwUpdateDto.getNewPw())); //변경 할때도 암호화 ^_^
-
+            responseDto.setResultCode(HttpStatus.SC_OK);
         }
         return responseDto;
     }
