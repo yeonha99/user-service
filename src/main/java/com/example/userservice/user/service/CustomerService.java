@@ -126,7 +126,7 @@ public class CustomerService {
                     .sex(customer.getUserInfo().getSex())
                     .phoneNum(customer.getUserInfo().getPhoneNum()).build();
             responseDto.setContext(customerInfoDto);
-            responseDto.setContext(HttpStatus.SC_UNAUTHORIZED);
+            responseDto.setResultCode(200);
         }
 
         return responseDto;
