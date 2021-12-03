@@ -11,7 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
