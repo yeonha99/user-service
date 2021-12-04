@@ -23,12 +23,12 @@ spring:
       format_sql: true
       ddl-auto: none
 
-#eureka:
-  #client:
-    #register-with-eureka: true
-    #fetch-registry: true
-    #service-url:
-     # defaultZone: http://3.38.54.131:8761/eureka/
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://172.20.223.152:8761/eureka/
 
 
 
