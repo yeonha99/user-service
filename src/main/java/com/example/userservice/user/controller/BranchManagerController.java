@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
+//테스트용
 @RestController
 @RequestMapping("/user-service")
 @RequiredArgsConstructor
