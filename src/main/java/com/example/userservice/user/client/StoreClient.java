@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
-@FeignClient(name="store-service")
+@FeignClient(name="store-service", url = "http://13.124.21.101:4000")
 public interface StoreClient {
 
     @GetMapping("/store-service/manager/store-name")//매장 id에 따른 이름 하나만 받아오기
